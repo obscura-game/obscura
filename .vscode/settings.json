@@ -51,5 +51,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "OBSCURA.sln"
+    "dotnet.defaultSolution": "obscura.sln"
 }
