@@ -1,10 +1,14 @@
+using System.Collections;
 using UnityEngine;
 
 public class RoomLightDetection : MonoBehaviour
 {
-    public sanity sanityScript;          // Referencia al script de cordura
-    public int sanityIncreaseAmount = 10; // Cantidad para aumentar la cordura si la luz está encendida
+    public Sanity sanityScript;          // Referencia al script de cordura
+    public int sanityIncreaseAmount = 5; // Cantidad para aumentar la cordura si la luz está encendida
     public int sanityDecreaseAmount = 10; // Cantidad para reducir la cordura si la luz está apagada
+    public float sanityChangeInterval = 0.5f; // Intervalo de tiempo para cambiar la cordura (en segundos)
+
+    private Coroutine sanityCoroutine;   // Referencia a la corutina activa
 
     private void OnTriggerEnter(Collider other)
     {
@@ -14,17 +18,41 @@ public class RoomLightDetection : MonoBehaviour
             Light roomLight = GetRoomLight();
             if (roomLight != null)
             {
-                if (roomLight.enabled)
-                {
-                    // Si la luz está encendida, aumenta la cordura
-                    sanityScript.IncreaseSanity(sanityIncreaseAmount);
-                }
-                else
-                {
-                    // Si la luz está apagada, reduce la cordura
-                    sanityScript.ReduceSanity(sanityDecreaseAmount);
-                }
+                // Inicia la corutina para cambiar la cordura según el estado de la luz
+                sanityCoroutine = StartCoroutine(ChangeSanityOverTime(roomLight));
             }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        // Comprobar si el jugador sale de la habitación
+        if (other.CompareTag("Player") && sanityCoroutine != null)
+        {
+            // Detener la corutina cuando el jugador salga de la habitación
+            StopCoroutine(sanityCoroutine);
+            sanityCoroutine = null;
+        }
+    }
+
+    // Corutina para cambiar la cordura continuamente según el estado de la luz
+    private IEnumerator ChangeSanityOverTime(Light roomLight)
+    {
+        while (true)
+        {
+            if (roomLight.enabled)
+            {
+                // Si la luz está encendida, aumenta la cordura
+                sanityScript.IncreaseSanity(sanityIncreaseAmount);
+            }
+            else
+            {
+                // Si la luz está apagada, reduce la cordura
+                sanityScript.ReduceSanity(sanityDecreaseAmount);
+            }
+
+            // Esperar el intervalo antes del siguiente cambio
+            yield return new WaitForSeconds(sanityChangeInterval);
         }
     }
 

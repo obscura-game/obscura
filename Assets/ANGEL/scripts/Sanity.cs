@@ -2,18 +2,18 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro; // Necesario para usar TextMeshPro
 
-public class sanity : MonoBehaviour
+public class Sanity : MonoBehaviour
 {
     public Slider sanitySlider;        // Referencia al slider del HUD
     public TextMeshProUGUI sanityText; // Referencia al texto que muestra la cordura
 
-    private int maxSanity = 1000;      // Valor máximo de cordura
+    private int _maxSanity = 1000;      // Valor máximo de cordura
     public int currentSanity;         // Cordura actual
 
     void Start()
     {
         // Inicializar la cordura al máximo
-        currentSanity = maxSanity;
+        currentSanity = _maxSanity;
         UpdateSanityHUD();
     }
 
@@ -25,10 +25,10 @@ public class sanity : MonoBehaviour
     // Método para aumentar la cordura
     public void IncreaseSanity(int amount)
     {
-        if (currentSanity < maxSanity)
+        if (currentSanity < _maxSanity)
         {
             currentSanity += amount;
-            currentSanity = Mathf.Clamp(currentSanity, 0, maxSanity);
+            currentSanity = Mathf.Clamp(currentSanity, 0, _maxSanity);
             UpdateSanityHUD();
         }
     }
@@ -39,7 +39,7 @@ public class sanity : MonoBehaviour
         if (currentSanity > 0)
         {
             currentSanity -= amount;
-            currentSanity = Mathf.Clamp(currentSanity, 0, maxSanity);
+            currentSanity = Mathf.Clamp(currentSanity, 0, _maxSanity);
             UpdateSanityHUD();
         }
     }
@@ -52,15 +52,15 @@ public class sanity : MonoBehaviour
         {
             currentSanity = 0;
         }
-        else if (currentSanity > maxSanity)
+        else if (currentSanity > _maxSanity)
         {
-            currentSanity = maxSanity;
+            currentSanity = _maxSanity;
         }
 
         // Actualiza Slider
         if (sanitySlider != null)
         {
-            sanitySlider.value = (float)currentSanity / maxSanity;
+            sanitySlider.value = (float)currentSanity / _maxSanity;
         }
 
         // Actualiza el número
