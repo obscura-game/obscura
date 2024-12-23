@@ -65,7 +65,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c01700fd266d6914ababb731e09af2eb, type: 3}
   m_Name: DepthOfField
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   mode:
     m_OverrideState: 1
     m_Value: 2
@@ -82,14 +82,14 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 0
   focusDistance:
-    m_OverrideState: 0
-    m_Value: 10
+    m_OverrideState: 1
+    m_Value: 1
   aperture:
     m_OverrideState: 0
     m_Value: 5.6
   focalLength:
     m_OverrideState: 1
-    m_Value: 140
+    m_Value: 1
   bladeCount:
     m_OverrideState: 0
     m_Value: 5
@@ -139,16 +139,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5485954d14dfb9a4c8ead8edb0ded5b1, type: 3}
   m_Name: LiftGammaGain
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   lift:
-    m_OverrideState: 1
-    m_Value: {x: 1, y: 0.019159961, z: 0, w: 4.0510725e-10}
+    m_OverrideState: 0
+    m_Value: {x: 1, y: 0.019159961, z: 0, w: 0.000000089085475}
   gamma:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 0.65990335, z: 0.6564127, w: 0.016722538}
+    m_Value: {x: 1, y: 0.993926, z: 0.99518615, w: 0.0000000021178261}
   gain:
-    m_OverrideState: 1
-    m_Value: {x: 1, y: 0.68193364, z: 0.68891513, w: -0.0000000036612493}
+    m_OverrideState: 0
+    m_Value: {x: 1, y: 0.68193364, z: 0.68891513, w: 0.0000000030278078}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -166,6 +166,32 @@ MonoBehaviour:
   - {fileID: -836911417582907633}
   - {fileID: -91728603023362}
   - {fileID: -2708695813553951046}
+  - {fileID: 674061831769810866}
+--- !u!114 &674061831769810866
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccf1aba9553839d41ae37dd52e9ebcce, type: 3}
+  m_Name: MotionBlur
+  m_EditorClassIdentifier: 
+  active: 1
+  mode:
+    m_OverrideState: 0
+    m_Value: 0
+  quality:
+    m_OverrideState: 1
+    m_Value: 2
+  intensity:
+    m_OverrideState: 1
+    m_Value: 0
+  clamp:
+    m_OverrideState: 0
+    m_Value: 0.05
 --- !u!114 &3296764346601306587
 MonoBehaviour:
   m_ObjectHideFlags: 3
