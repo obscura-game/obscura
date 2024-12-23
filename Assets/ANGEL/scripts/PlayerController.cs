@@ -3,7 +3,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public Transform cameraTransform; // Asigna la cámara aquí
-    public float sensitivity = 200f;  // Sensibilidad del mouse
+    public float sensitivity = 300f;  // Sensibilidad del mouse
     public float speed = 5f;          // Velocidad de movimiento
 
     private float xRotation = 0f;     // Rotación en el eje X para la cámara
