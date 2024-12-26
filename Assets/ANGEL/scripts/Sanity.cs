@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -7,6 +8,7 @@ using UnityEngine.Rendering.Universal; // Necesario para postprocesado URP
 
 public class Sanity : MonoBehaviour
 {
+    // --AJUSTES DE CORDURA--
     [Header("Sanity Settings")]
     [Range(0, 100)]
     private int _maxSanity = 1000;     // Valor máximo de cordura
@@ -22,7 +24,7 @@ public class Sanity : MonoBehaviour
     public TextMeshProUGUI sanityText; // Referencia al texto que muestra la cordura
     
     // --EFECTO SHAKE--
-    private CameraShake cameraShake; // Referencia al script CameraShake
+    private CameraFollow cameraShake; // Referencia al script CameraShake
 
     // --EFECTOS DE POSTPROCESADO--
     public Volume postProcessingVolume; // Referencia al Volume del postprocesado
@@ -120,7 +122,7 @@ public class Sanity : MonoBehaviour
             }
         }
         
-        cameraShake = FindObjectOfType<CameraShake>();
+        cameraShake = FindObjectOfType<CameraFollow>();
     }
 
     void Update()
@@ -135,10 +137,7 @@ public class Sanity : MonoBehaviour
         UpdateMotionBlurEffect();
         
         // --Efecto shake-
-        if (currentSanity < 200 && cameraShake != null)
-        {
-            cameraShake.TriggerShake(0.5f, 0.2f);
-        }
+        UpdateShakeEffect();
     }
 
     // --METODOS PARA MANIPULAR LA CORDURA--
@@ -209,8 +208,27 @@ public class Sanity : MonoBehaviour
         }
         
     }
+
+    // --METODOS PARA ACTUALIZAR LOS EFECTOS--
     
-    // --METODOS PARA LOS EFECTOS DE POSTPROCESADO--
+    // Método para actualizar el efecto Shake
+    private void UpdateShakeEffect()
+    {
+        float sanityRatio = currentSanity / _maxSanity; // Relación actual de sanity con respecto al máximo
+
+        if (currentSanity < _maxSanity * 0.2f && cameraShake != null)
+        {
+            float shakeMagnitude = Mathf.Lerp(0.2f, 0.02f, sanityRatio); // De 0.2 a 0.05 según la sanity
+            cameraShake.TriggerShake(0.5f, shakeMagnitude); // Duración fija, magnitud variable
+        }
+        else if (currentSanity < _maxSanity * 0.4f)
+        {
+            float shakeMagnitude = Mathf.Lerp(0.02f, 0f, sanityRatio); // De 0.05 a 0 según la sanity
+            cameraShake.TriggerShake(0.5f, shakeMagnitude); // Duración fija, magnitud decreciente
+        }
+    }
+    
+    // -POSTPROCESADO-
 
     // Método para actualizar el efecto Vignette
     private void UpdateVignetteEffect()
