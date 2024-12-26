@@ -1,40 +1,59 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal; // Necesario para postprocesado URP
 
 public class Sanity : MonoBehaviour
 {
+    [Header("Sanity Settings")]
+    [Range(0, 100)]
+    private int _maxSanity = 1000;     // Valor máximo de cordura
+    public int currentSanity;         // Cordura actual, esta en publico para poder editarlo desde el inspector
+    
+    // --HUD--
+    [Header("UI Components")] 
+    public Image skullImage;
+    public Image sanityFillImage;
+    public Material backgroundMaterial;
+    public Sprite[] skullSprites;
     public Slider sanitySlider;        // Referencia al slider del HUD
     public TextMeshProUGUI sanityText; // Referencia al texto que muestra la cordura
+    
+    // --EFECTO SHAKE--
+    private CameraShake cameraShake; // Referencia al script CameraShake
+
+    // --EFECTOS DE POSTPROCESADO--
     public Volume postProcessingVolume; // Referencia al Volume del postprocesado
+    
+    private Vignette vignette;
+    private FilmGrain filmGrain;
+    private LiftGammaGain liftGammaGain;
+    private DepthOfField depthOfField;
+    private MotionBlur motionBlur;
+    
+    // Vignette
+    private float vignetteMinIntensity = 0.3f; // Siempre hay al menos un poco de Vignette activo
+    private float vignetteMaxIntensity = 0.6f; 
+    private float vignetteMinSmoothness = 0.3f; 
+    private float vignetteMaxSmoothness = 0.6f; 
 
-    private int _maxSanity = 1000;     // Valor máximo de cordura
-    public int currentSanity;         // Cordura actual
+    // Grain
+    private float grainMinIntensity = 0.3f; // Siempre hay efecto de grano activo (como con el Vignette)
+    private float grainMaxIntensity = 1.0f; 
 
-    private Vignette vignette;        // Referencia al efecto Vignette
-    private FilmGrain filmGrain;      // Referencia al efecto FilmGrain
-    private LiftGammaGain liftGammaGain; // Referencia al efecto LiftGammaGain
-    private DepthOfField depthOfField;  // Referencia al efecto Depth of Field
-    private MotionBlur motionBlur;      // Referencia al efecto Motion Blur
-
-    private float vignetteMinIntensity = 0.3f; // Intensidad mínima del Vignette
-    private float vignetteMaxIntensity = 0.6f; // Intensidad máxima del Vignette
-    private float vignetteMinSmoothness = 0.3f; // Suavidad mínima del Vignette
-    private float vignetteMaxSmoothness = 0.6f; // Suavidad máxima del Vignette
-
-    private float grainMinIntensity = 0.3f; // Intensidad mínima del Grain
-    private float grainMaxIntensity = 1.0f; // Intensidad máxima del Grain
-
+    // Lift Gamma Gain (efecto color rojo)
     private float liftGammaMinValue = 0.0f; // Valor mínimo de gamma
     private float liftGammaMaxValue = 1.0f; // Valor máximo de gamma
 
-    private float focalLengthMin = 1.0f;    // Focal length mínimo
-    private float focalLengthMax = 40.0f;   // Focal length máximo
+    // Depth of Field (efecto borroso)
+    private float focalLengthMin = 1.0f;    // Focal length normal
+    private float focalLengthMax = 40.0f;   // Focal length máximo (es el tope del efecto)
 
-    private float motionBlurMinIntensity = 0.0f; // Intensidad mínima del Motion Blur
-    private float motionBlurMaxIntensity = 1.0f; // Intensidad máxima del Motion Blur
+    // Motion blur (efecto al moverse)
+    private float motionBlurMinIntensity = 0.0f;
+    private float motionBlurMaxIntensity = 1.0f;
 
     void Start()
     {
@@ -100,18 +119,30 @@ public class Sanity : MonoBehaviour
                 motionBlur.intensity.value = motionBlurMinIntensity; // Cordura alta, motion blur mínimo
             }
         }
+        
+        cameraShake = FindObjectOfType<CameraShake>();
     }
 
     void Update()
     {
         UpdateSanityHUD();
+        
+        // --Efectos de postprocesado--
         UpdateVignetteEffect();
         UpdateFilmGrainEffect();
         UpdateLiftGammaGainEffect();
         UpdateDepthOfFieldEffect();
-        UpdateMotionBlurEffect(); // Agregar lógica para Motion Blur
+        UpdateMotionBlurEffect();
+        
+        // --Efecto shake-
+        if (currentSanity < 200 && cameraShake != null)
+        {
+            cameraShake.TriggerShake(0.5f, 0.2f);
+        }
     }
 
+    // --METODOS PARA MANIPULAR LA CORDURA--
+    
     // Método para aumentar la cordura
     public void IncreaseSanity(int amount)
     {
@@ -133,25 +164,53 @@ public class Sanity : MonoBehaviour
             UpdateSanityHUD();
         }
     }
+    
+    // --HUD--
 
     // Método para actualizar el HUD
     private void UpdateSanityHUD()
     {
-        // Controla que no pueda ser menor a 0 o mayor a maxSanity
+        // Controla que no pueda ser menor a 0 o mayor a maxSanity.
+        // Nota: Esto realmente es solo para cuando se modifica desde el inspector para las pruebas, 
+        // porque al modificarlo desde los métodos ya está controlado que no se pase del mínimo ni del máximo.
         currentSanity = Mathf.Clamp(currentSanity, 0, _maxSanity);
 
-        // Actualiza Slider
-        if (sanitySlider != null)
-        {
-            sanitySlider.value = (float)currentSanity / _maxSanity;
-        }
-
-        // Actualiza el número
+        // Actualiza el número (esto habrá que quitarlo cuando pongamos el HUD con el slider definitivo)
         if (sanityText != null)
         {
             sanityText.text = currentSanity.ToString();
         }
+
+        // Actualiza el fillAmount del Sanitymeter en el componente Image, es decir, la cantidad de relleno
+        if (sanityFillImage != null)
+        {
+            float fillAmount = (float)currentSanity / _maxSanity;
+            sanityFillImage.fillAmount = fillAmount;
+        }
+
+        // Actualiza el color del fondo del Sanitymeter
+        if (backgroundMaterial != null)
+        {
+            float fillAmount = (float)currentSanity / _maxSanity;
+            backgroundMaterial.SetFloat("_FillAmount", fillAmount);
+        }
+
+        // Actualiza la imagen del cráneo
+        if (skullImage != null && skullSprites.Length > 0)
+        {
+            if (currentSanity > 600)
+                skullImage.sprite = skullSprites[0];
+            else if (currentSanity > 400)
+                skullImage.sprite = skullSprites[1];
+            else if (currentSanity > 200)
+                skullImage.sprite = skullSprites[2];
+            else
+                skullImage.sprite = skullSprites[3];
+        }
+        
     }
+    
+    // --METODOS PARA LOS EFECTOS DE POSTPROCESADO--
 
     // Método para actualizar el efecto Vignette
     private void UpdateVignetteEffect()
