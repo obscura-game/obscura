@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewPatient", menuName = "Patient Data")]
+[CreateAssetMenu(fileName = "NuevoPaciente", menuName = "Datos Ficha Paciente")]
 public class PatientData : ScriptableObject
 {
     public string nombre;
@@ -10,5 +10,8 @@ public class PatientData : ScriptableObject
     public string colorOjos;
     public string diagnosticos;
     public string descripcion;
+    public string fechaUltimaRevision;
+    public string doctorEncargado;
+    public float nivelPeligrosidad;
     public Sprite foto; // Foto del paciente
 }
