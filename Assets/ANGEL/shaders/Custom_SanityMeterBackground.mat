@@ -29,7 +29,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _FillAmount: 0
+    - _FillAmount: 1
     - _ShakeIntensity: 0.1
     m_Colors:
     - _ColorA: {r: 0, g: 0.43137255, b: 0, a: 0.9019608}
