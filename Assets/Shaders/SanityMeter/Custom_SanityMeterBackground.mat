@@ -29,8 +29,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _FillAmount: 1
+    - _Amplitud: 0.5
+    - _FillAmount: 0.47
     - _ShakeIntensity: 0.1
+    - _olas: 1
     m_Colors:
     - _ColorA: {r: 0, g: 0.43137255, b: 0, a: 0.9019608}
     - _ColorB: {r: 0.43137255, g: 0, b: 0, a: 0.9411765}

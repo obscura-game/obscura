@@ -192,7 +192,11 @@ public class Sanity : MonoBehaviour
         {
             float fillAmount = (float)currentSanity / _maxSanity;
             backgroundMaterial.SetFloat("_FillAmount", fillAmount);
+            
         }
+
+        if (currentSanity < 600)
+            backgroundMaterial.SetInt("_olas", 1);
 
         // Actualiza la imagen del cráneo
         if (skullImage != null && skullSprites.Length > 0)

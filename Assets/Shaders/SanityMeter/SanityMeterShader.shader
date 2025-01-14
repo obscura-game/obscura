@@ -6,6 +6,8 @@ Shader "Custom/SanityMeterBackground"
         _ColorB ("End Color", Color) = (110, 0, 0, 230)   // Rojo
         _FillAmount ("Fill Amount", Range(0, 1)) = 1
         _MainTex ("Texture", 2D) = "white" {} // Textura principal
+        _Amplitud ("Amplitud", Range(0,1)) = 0.5
+        _olas ("Olas", int) = 0
     }
 
     SubShader
@@ -27,6 +29,8 @@ Shader "Custom/SanityMeterBackground"
             float4 _ColorA;
             float4 _ColorB;
             float _FillAmount;
+            float _Amplitud;
+            int _olas;
 
             struct appdata
             {
@@ -45,6 +49,12 @@ Shader "Custom/SanityMeterBackground"
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = v.uv;
+                
+                if(_olas == 1)
+                {
+
+                }
+
                 return o;
             }
 
