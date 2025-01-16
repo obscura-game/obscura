@@ -2250,7 +2250,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 1
 --- !u!64 &1351462767
 MeshCollider:
@@ -3278,6 +3278,36 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1266926234548154478, guid: 9947978d4f2819142a3ff4327aed1b80,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 1266926234548154478, guid: 9947978d4f2819142a3ff4327aed1b80,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 1266926234548154478, guid: 9947978d4f2819142a3ff4327aed1b80,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 1266926234548154478, guid: 9947978d4f2819142a3ff4327aed1b80,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 110
+      objectReference: {fileID: 0}
+    - target: {fileID: 1266926234548154478, guid: 9947978d4f2819142a3ff4327aed1b80,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -110
+      objectReference: {fileID: 0}
+    - target: {fileID: 1266926234548154478, guid: 9947978d4f2819142a3ff4327aed1b80,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2671023651292162183, guid: 9947978d4f2819142a3ff4327aed1b80,
         type: 3}
       propertyPath: m_LocalPosition.x

@@ -63,10 +63,12 @@ public class PlayerPickUpController : MonoBehaviour
         currentRb = currentObject.GetComponent<Rigidbody>();
 
         // Configurar el objeto recogido
+        Transform originTransform = obj.transform;
+
         currentObject.transform.SetParent(objectContainer);
         currentObject.transform.localPosition = Vector3.zero;
         currentObject.transform.localRotation = Quaternion.identity;
-        currentObject.transform.localScale = Vector3.one;
+        //currentObject.transform.localScale = originTransform.localScale;
 
         if (currentRb != null)
         {
