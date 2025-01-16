@@ -30,7 +30,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _Amplitud: 0.5
-    - _FillAmount: 0.47
+    - _FillAmount: 1
     - _ShakeIntensity: 0.1
     - _olas: 1
     m_Colors:

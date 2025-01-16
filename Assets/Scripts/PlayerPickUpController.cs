@@ -18,16 +18,28 @@ public class PlayerPickUpController : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             GameObject detectedObject = raycaster.GetDetectedObject();
 
-            // Comprobar si el objeto tiene el tag "PickUp" y no hay otro objeto equipado
-            if (!equipped && detectedObject != null && detectedObject.CompareTag("PickUp"))
+            if (detectedObject != null && detectedObject.CompareTag("PickUp"))
             {
-                PickUp(detectedObject);
+                if (!equipped)
+                {
+                    PickUp(detectedObject);
+                }
+                else
+                {
+                    Drop();
+                    PickUp(detectedObject);
+                }
             }
-            else if (equipped)
+
+        }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            if (equipped)
             {
                 Drop();
             }
