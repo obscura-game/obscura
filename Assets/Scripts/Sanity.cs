@@ -196,7 +196,10 @@ public class Sanity : MonoBehaviour
         }
 
         if (currentSanity < 600)
+        {
             backgroundMaterial.SetInt("_olas", 1);
+        }
+
 
         // Actualiza la imagen del cráneo
         if (skullImage != null && skullSprites.Length > 0)

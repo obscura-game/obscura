@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Custom_SanityMeterBackground
-  m_Shader: {fileID: 4800000, guid: 9c9ac03ad501a444fbc82e8f37ddb2d9, type: 3}
+  m_Name: Custom_Prueba_olas
+  m_Shader: {fileID: 4800000, guid: 4eabba16213961941889491c141599bf, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -29,16 +29,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Amplitud: 0.5
-    - _Amplitude: 0.5
-    - _FillAmount: 0.254
+    - _Amplitud: 1
     - _Frecuencia: 0
-    - _Frequency: 2.5
-    - _ShakeIntensity: 0.1
-    - _Speed: 10
-    - _olas: 1
+    - _olas: 0
     - _vel: 1
     m_Colors:
-    - _ColorA: {r: 0, g: 0.43137255, b: 0, a: 0.9019608}
-    - _ColorB: {r: 0.43137255, g: 0, b: 0, a: 0.9411765}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []

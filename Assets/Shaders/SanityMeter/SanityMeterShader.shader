@@ -6,13 +6,15 @@ Shader "Custom/SanityMeterBackground"
         _ColorB ("End Color", Color) = (110, 0, 0, 230)   // Rojo
         _FillAmount ("Fill Amount", Range(0, 1)) = 1
         _MainTex ("Texture", 2D) = "white" {} // Textura principal
-        _Amplitud ("Amplitud", Range(0,1)) = 0.5
+        _Amplitude ("Amplitud", Range(0,1)) = 0.5
+        _Speed ("Velocidad", Range(0,20)) = 10
+        _Frequency ("Frecuencia", Range(0,5)) = 2.5
         _olas ("Olas", int) = 0
     }
 
     SubShader
     {
-        Tags { "Queue" = "Transparent" "RenderType"="Transparent" }
+        Tags { "Queue" = "Transparent" "RenderType" = "Transparent" }
         LOD 100
 
         Blend SrcAlpha OneMinusSrcAlpha // Para manejar transparencias
@@ -29,7 +31,11 @@ Shader "Custom/SanityMeterBackground"
             float4 _ColorA;
             float4 _ColorB;
             float _FillAmount;
-            float _Amplitud;
+            float _Amplitude;
+            float _Frequency;
+            float _Speed;
+            float _time;
+
             int _olas;
 
             struct appdata
@@ -52,7 +58,7 @@ Shader "Custom/SanityMeterBackground"
                 
                 if(_olas == 1)
                 {
-
+                    v.vertex.y += cos((v.vertex.x + _time * _Speed) * _Frequency) * _Amplitude * (v.vertex.x - 5);
                 }
 
                 return o;

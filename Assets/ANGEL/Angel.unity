@@ -1255,7 +1255,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraTransform: {fileID: 546539501}
-  sensitivity: 200
+  sensitivity: 150
   speed: 5
   footstepAudioSource: {fileID: 1388853745}
   fadeSpeed: 10
