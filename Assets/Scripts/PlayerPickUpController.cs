@@ -64,6 +64,9 @@ public class PlayerPickUpController : MonoBehaviour
 
         // Configurar el objeto recogido
         Transform originTransform = obj.transform;
+        
+        // Quitarle el collider al objeto
+
 
         currentObject.transform.SetParent(objectContainer);
         currentObject.transform.localPosition = Vector3.zero;
