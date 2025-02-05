@@ -8,6 +8,7 @@ public class PlayerPickUpController : MonoBehaviour
 
     private GameObject currentObject;
     private Rigidbody currentRb;
+    private Collider objCollider;
     private bool equipped;
     private InteractionRaycaster raycaster;
 
@@ -64,9 +65,13 @@ public class PlayerPickUpController : MonoBehaviour
 
         // Configurar el objeto recogido
         Transform originTransform = obj.transform;
-        
-        // Quitarle el collider al objeto
 
+        // Quitarle el collider al objeto
+        objCollider = currentObject.GetComponent<Collider>();
+        if (objCollider != null)
+        {
+            objCollider.enabled = false;
+        }
 
         currentObject.transform.SetParent(objectContainer);
         currentObject.transform.localPosition = Vector3.zero;
@@ -87,6 +92,7 @@ public class PlayerPickUpController : MonoBehaviour
 
         if (currentRb != null)
         {
+            objCollider.enabled = true;
             currentRb.isKinematic = false;
             currentRb.useGravity = true;
             currentRb.velocity = GetComponent<Rigidbody>().velocity;
