@@ -26,12 +26,12 @@ public class Sanity : MonoBehaviour
     public AudioSource heartbeatAudioSource;
     
     // Breathing
-    private float breathingMinVolume = 0.001f;
-    private float breathingMaxVolume = 0.8f;
+    private float breathingMinVolume = 0.005f;
+    private float breathingMaxVolume = 1f;
     
     // Heartbeat
-    private float heartbeatMinVolume = 0.5f;
-    private float heartbeatMaxVolume = 1f;
+    private float heartbeatMinVolume = 0f;
+    private float heartbeatMaxVolume = 0.8f;
     
     // --EFECTO SHAKE--
     private CameraFollow cameraShake; // Referencia al script CameraShake
@@ -151,6 +151,7 @@ public class Sanity : MonoBehaviour
         
         // --Efectos de sonido--
         UpdateBreathingSound();
+        UpdateHeartbeatSound();
     }
 
     // --METODOS PARA MANIPULAR LA CORDURA--
@@ -233,14 +234,37 @@ public class Sanity : MonoBehaviour
     {
         float sanityRatio = currentSanity / (float)_maxSanity;
 
-        if (currentSanity < _maxSanity * 0.9f) // Cuando la cordura baje del 90%
+        if (currentSanity < _maxSanity * 0.4f) // Cuando la cordura baje del 40%
         {
-            float audioVolume = Mathf.Lerp(breathingMaxVolume, breathingMinVolume, sanityRatio);
-            breathingAudioSource.volume = audioVolume;
+            breathingAudioSource.volume = Mathf.Lerp(breathingMaxVolume, 0.1f, sanityRatio);
+            heartbeatAudioSource.volume = Mathf.Lerp(breathingMaxVolume, 0.1f, sanityRatio);
+        } else if (currentSanity < _maxSanity * 0.9f)// Cuando la cordura baje del 90%
+        {
+            breathingAudioSource.volume = Mathf.Lerp(0.1f, breathingMinVolume, sanityRatio);
+            heartbeatAudioSource.volume = Mathf.Lerp(0.1f, breathingMinVolume, sanityRatio);
         }
         else
         {
-            breathingAudioSource.volume = breathingMinVolume; // Asegúrate de que el volumen sea el mínimo cuando la sanidad esté cerca del máximo
+            breathingAudioSource.volume = breathingMinVolume;
+            heartbeatAudioSource.volume = breathingMinVolume;
+        }
+    }
+    
+    // Método para actualizar el sonido de latidos
+    private void UpdateHeartbeatSound()
+    {
+        float sanityRatio = currentSanity / (float)_maxSanity;
+        
+        if (currentSanity < _maxSanity * 0.4f) // Cuando la cordura baje del 40%
+        {
+            heartbeatAudioSource.volume = Mathf.Lerp(heartbeatMaxVolume, 0.08f, sanityRatio);
+        } else if (currentSanity < _maxSanity * 0.9f)// Cuando la cordura baje del 90%
+        {
+            heartbeatAudioSource.volume = Mathf.Lerp(0.08f, heartbeatMinVolume, sanityRatio);
+        }
+        else
+        {
+            heartbeatAudioSource.volume = heartbeatMinVolume;
         }
     }
     
