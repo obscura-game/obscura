@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Audio/sounds/Objetos/ambiente_horror1.mp3.meta
+guid: 83bcaaa0055ca794e9cb94b8ff742aef
+========
 guid: f4dfa7241357d7e4e80c1cb62cb82311
+>>>>>>>> 21e9a95502f4469ee4f9144d2c1c582626447d51:Assets/Audio/sounds/Player/caminar_en_concreto2.mp3.meta
 AudioImporter:
   externalObjects: {}
   serializedVersion: 7

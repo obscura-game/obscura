@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Audio/sounds/Player/pasos_suaves_loseta.mp3.meta
 guid: 04566300dd1a98a48b4683db499efe3a
+========
+guid: 8707176e688393641b1cfe478648cb24
+>>>>>>>> 21e9a95502f4469ee4f9144d2c1c582626447d51:Assets/Audio/sounds/Player/caminar_en_concreto3.mp3.meta
 AudioImporter:
   externalObjects: {}
   serializedVersion: 7
