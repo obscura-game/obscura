@@ -15,6 +15,14 @@ public class PhoneManager : MonoBehaviour
     public AudioSource notificationSound;
 
     private bool isPhoneActive = false;
+    private bool firstPlayerResponse = false;
+
+    void Start()
+    {
+        PhoneCanvas.SetActive(false);
+        isPhoneActive = false;
+        StartCoroutine(DelayedNPCMessage());
+    }
 
     void Update()
     {
@@ -22,6 +30,17 @@ public class PhoneManager : MonoBehaviour
         {
             isPhoneActive = !isPhoneActive;
             PhoneCanvas.SetActive(isPhoneActive);
+
+            if (isPhoneActive)
+            {
+                inputField.ActivateInputField();
+            }
+        }
+
+        
+        if (isPhoneActive && Input.GetKeyDown(KeyCode.Return))
+        {
+            SendMessage();
         }
     }
 
@@ -29,9 +48,16 @@ public class PhoneManager : MonoBehaviour
     {
         if (!string.IsNullOrEmpty(inputField.text))
         {
-            AddMessage(inputField.text, true);
+            string playerMessage = inputField.text;
+            AddMessage(playerMessage, true);
             inputField.text = "";
-            StartCoroutine(NPCResponse());
+            inputField.ActivateInputField();
+
+            if (!firstPlayerResponse && playerMessage.ToLower().Contains("si ya estoy aqui"))
+            {
+                firstPlayerResponse = true;
+                StartCoroutine(NPCResponse("Vale, necesito que hagas lo siguiente"));
+            }
         }
     }
 
@@ -45,6 +71,12 @@ public class PhoneManager : MonoBehaviour
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(chatContent.GetComponent<RectTransform>());
         StartCoroutine(ScrollToBottom());
+
+       
+        if (!isPlayer && notificationSound != null)
+        {
+            notificationSound.Play();
+        }
     }
 
     IEnumerator ScrollToBottom()
@@ -53,10 +85,20 @@ public class PhoneManager : MonoBehaviour
         chatScroll.verticalNormalizedPosition = 0f;
     }
 
-    IEnumerator NPCResponse()
+    IEnumerator DelayedNPCMessage()
+    {
+        yield return new WaitForSeconds(10);
+        AddMessage("Ya has llegado?", false);
+        if (notificationSound != null)
+        {
+            notificationSound.Play();
+        }
+    }
+
+    IEnumerator NPCResponse(string response)
     {
         yield return new WaitForSeconds(Random.Range(1, 3));
-        AddMessage("Estoy en camino...", false);
+        AddMessage(response, false);
         if (notificationSound != null)
         {
             notificationSound.Play();
