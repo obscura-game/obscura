@@ -12,7 +12,7 @@ public class Sanity : MonoBehaviour
     [Header("Sanity Settings")]
     [Range(0, 100)]
     private int _maxSanity = 1000;     // Valor máximo de cordura
-    public int currentSanity;         // Cordura actual, esta en publico para poder editarlo desde el inspector
+    public int currentSanity;         // Cordura actual, está en público para poder editarlo desde el inspector
     
     // --HUD--
     [Header("UI Components")] 
@@ -20,8 +20,18 @@ public class Sanity : MonoBehaviour
     public Image sanityFillImage;
     public Material backgroundMaterial;
     public Sprite[] skullSprites;
-    public Slider sanitySlider;        // Referencia al slider del HUD
-    public TextMeshProUGUI sanityText; // Referencia al texto que muestra la cordura
+    
+    // --SONIDOS--
+    public AudioSource breathingAudioSource;
+    public AudioSource heartbeatAudioSource;
+    
+    // Breathing
+    private float breathingMinVolume = 0.001f;
+    private float breathingMaxVolume = 0.8f;
+    
+    // Heartbeat
+    private float heartbeatMinVolume = 0.5f;
+    private float heartbeatMaxVolume = 1f;
     
     // --EFECTO SHAKE--
     private CameraFollow cameraShake; // Referencia al script CameraShake
@@ -138,6 +148,9 @@ public class Sanity : MonoBehaviour
         
         // --Efecto shake-
         UpdateShakeEffect();
+        
+        // --Efectos de sonido--
+        UpdateBreathingSound();
     }
 
     // --METODOS PARA MANIPULAR LA CORDURA--
@@ -174,12 +187,6 @@ public class Sanity : MonoBehaviour
         // porque al modificarlo desde los métodos ya está controlado que no se pase del mínimo ni del máximo.
         currentSanity = Mathf.Clamp(currentSanity, 0, _maxSanity);
 
-        // Actualiza el número (esto habrá que quitarlo cuando pongamos el HUD con el slider definitivo)
-        if (sanityText != null)
-        {
-            sanityText.text = currentSanity.ToString();
-        }
-
         // Actualiza el fillAmount del Sanitymeter en el componente Image, es decir, la cantidad de relleno
         if (sanityFillImage != null)
         {
@@ -195,6 +202,7 @@ public class Sanity : MonoBehaviour
             
         }
 
+        // Esto es lo del shader de las olas (que no va)
         if (currentSanity < 600)
         {
             backgroundMaterial.SetInt("_olas", 1);
@@ -218,6 +226,26 @@ public class Sanity : MonoBehaviour
 
     // --METODOS PARA ACTUALIZAR LOS EFECTOS--
     
+    // -SONIDOS-
+    
+    // Método para actualizar el sonido de respiración
+    private void UpdateBreathingSound()
+    {
+        float sanityRatio = currentSanity / (float)_maxSanity;
+
+        if (currentSanity < _maxSanity * 0.9f) // Cuando la cordura baje del 90%
+        {
+            float audioVolume = Mathf.Lerp(breathingMaxVolume, breathingMinVolume, sanityRatio);
+            breathingAudioSource.volume = audioVolume;
+        }
+        else
+        {
+            breathingAudioSource.volume = breathingMinVolume; // Asegúrate de que el volumen sea el mínimo cuando la sanidad esté cerca del máximo
+        }
+    }
+    
+    // -VISUALES-
+    
     // Método para actualizar el efecto Shake
     private void UpdateShakeEffect()
     {
@@ -225,7 +253,7 @@ public class Sanity : MonoBehaviour
 
         if (currentSanity < _maxSanity * 0.2f && cameraShake != null)
         {
-            float shakeMagnitude = Mathf.Lerp(0.2f, 0.02f, sanityRatio); // De 0.2 a 0.05 según la sanity
+            float shakeMagnitude = Mathf.Lerp(0.2f, 0.02f, sanityRatio); // De 0.2 a 0.02 según la sanity
             cameraShake.TriggerShake(0.5f, shakeMagnitude); // Duración fija, magnitud variable
         }
         else if (currentSanity < _maxSanity * 0.4f)
