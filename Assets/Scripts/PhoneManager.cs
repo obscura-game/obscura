@@ -13,6 +13,7 @@ public class PhoneManager : MonoBehaviour
     public GameObject PlayerMessagePrefab;
     public GameObject NPCMessagePrefab;
     public AudioSource notificationSound;
+    public PlayerController playerController;
 
     private bool isPhoneActive = false;
     private bool firstPlayerResponse = false;
@@ -37,7 +38,6 @@ public class PhoneManager : MonoBehaviour
             }
         }
 
-        
         if (isPhoneActive && Input.GetKeyDown(KeyCode.Return))
         {
             SendMessage();
@@ -72,7 +72,6 @@ public class PhoneManager : MonoBehaviour
         LayoutRebuilder.ForceRebuildLayoutImmediate(chatContent.GetComponent<RectTransform>());
         StartCoroutine(ScrollToBottom());
 
-       
         if (!isPlayer && notificationSound != null)
         {
             notificationSound.Play();
@@ -97,7 +96,7 @@ public class PhoneManager : MonoBehaviour
 
     IEnumerator NPCResponse(string response)
     {
-        yield return new WaitForSeconds(Random.Range(1, 3));
+        yield return new WaitForSeconds(Random.Range(3, 8));
         AddMessage(response, false);
         if (notificationSound != null)
         {
