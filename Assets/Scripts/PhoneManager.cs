@@ -12,17 +12,17 @@ public class PhoneManager : MonoBehaviour
     public TMP_InputField inputField;
     public GameObject PlayerMessagePrefab;
     public GameObject NPCMessagePrefab;
-    public AudioSource notificationSound;
+    public AudioSource npcNotificationSound;
+    public AudioSource playerNotificationSound;
     public PlayerController playerController;
 
     private bool isPhoneActive = false;
-    private bool firstPlayerResponse = false;
 
     void Start()
     {
         PhoneCanvas.SetActive(false);
         isPhoneActive = false;
-        StartCoroutine(DelayedNPCMessage());
+        StartCoroutine(StartConversation());
     }
 
     void Update()
@@ -37,27 +37,27 @@ public class PhoneManager : MonoBehaviour
                 inputField.ActivateInputField();
             }
         }
+    }
 
-        if (isPhoneActive && Input.GetKeyDown(KeyCode.Return))
-        {
-            SendMessage();
-        }
+    IEnumerator StartConversation()
+    {
+        yield return new WaitForSeconds(2);
+        AddMessage("¿Has podido entrar?", false);
+        yield return new WaitForSeconds(5);
+        AddMessage("Sí, ha sido más fácil de lo que pensaba.", true);
+        yield return new WaitForSeconds(5);
+        AddMessage("Perfecto, ten cuidado.", false);
+        yield return new WaitForSeconds(5);
+        AddMessage("No hay nada de qué preocuparse, es un simple hospital abandonado.", true);
     }
 
     public void SendMessage()
     {
         if (!string.IsNullOrEmpty(inputField.text))
         {
-            string playerMessage = inputField.text;
-            AddMessage(playerMessage, true);
+            AddMessage(inputField.text, true);
             inputField.text = "";
             inputField.ActivateInputField();
-
-            if (!firstPlayerResponse && playerMessage.ToLower().Contains("si ya estoy aqui"))
-            {
-                firstPlayerResponse = true;
-                StartCoroutine(NPCResponse("Vale, necesito que hagas lo siguiente"));
-            }
         }
     }
 
@@ -72,9 +72,13 @@ public class PhoneManager : MonoBehaviour
         LayoutRebuilder.ForceRebuildLayoutImmediate(chatContent.GetComponent<RectTransform>());
         StartCoroutine(ScrollToBottom());
 
-        if (!isPlayer && notificationSound != null)
+        if (isPlayer && playerNotificationSound != null)
         {
-            notificationSound.Play();
+            playerNotificationSound.Play();
+        }
+        else if (!isPlayer && npcNotificationSound != null)
+        {
+            npcNotificationSound.Play();
         }
     }
 
@@ -82,25 +86,5 @@ public class PhoneManager : MonoBehaviour
     {
         yield return new WaitForEndOfFrame();
         chatScroll.verticalNormalizedPosition = 0f;
-    }
-
-    IEnumerator DelayedNPCMessage()
-    {
-        yield return new WaitForSeconds(10);
-        AddMessage("Ya has llegado?", false);
-        if (notificationSound != null)
-        {
-            notificationSound.Play();
-        }
-    }
-
-    IEnumerator NPCResponse(string response)
-    {
-        yield return new WaitForSeconds(Random.Range(3, 8));
-        AddMessage(response, false);
-        if (notificationSound != null)
-        {
-            notificationSound.Play();
-        }
     }
 }
