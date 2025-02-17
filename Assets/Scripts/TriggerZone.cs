@@ -9,9 +9,10 @@ public class TriggerZone : MonoBehaviour
     {
         
     }
-    {
-        
-    }dw a
-}
-d    // Update d called once per frame
+
+    // Update d called once per frame
     void Update()
+    {
+
+    }
+}
