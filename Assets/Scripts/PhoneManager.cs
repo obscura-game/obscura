@@ -35,19 +35,31 @@ public class PhoneManager : MonoBehaviour
             if (isPhoneActive)
             {
                 inputField.ActivateInputField();
+                if (playerController != null)
+                {
+                    playerController.enabled = false;
+                }
+            }
+            else
+            {
+                inputField.DeactivateInputField();
+                if (playerController != null)
+                {
+                    playerController.enabled = true;
+                }
             }
         }
     }
 
     IEnumerator StartConversation()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(10);
         AddMessage("¿Has podido entrar?", false);
         yield return new WaitForSeconds(5);
         AddMessage("Sí, ha sido más fácil de lo que pensaba.", true);
         yield return new WaitForSeconds(5);
         AddMessage("Perfecto, ten cuidado.", false);
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(4);
         AddMessage("No hay nada de qué preocuparse, es un simple hospital abandonado.", true);
     }
 
