@@ -3,6 +3,7 @@ using UnityEngine;
 public class MoverPersonaje : MonoBehaviour
 {
     public float velocidad = 2.0f; // Velocidad de movimiento
+    public float segundosParaDestruir = 3.0f; // Tiempo en segundos antes de destruir el personaje
     private bool mover = false;    // Controla si el personaje debe moverse
     private Animator animator;     // Referencia al Animator del personaje
 
@@ -16,6 +17,9 @@ public class MoverPersonaje : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Activa el movimiento y programa la destrucción del personaje después de un tiempo.
+    /// </summary>
     public void ActivarMovimiento()
     {
         mover = true;
@@ -24,8 +28,11 @@ public class MoverPersonaje : MonoBehaviour
         // Activa directamente la animación DrunkMove
         if (animator != null)
         {
-            animator.Play("Walking"); // Reproduce la animación por su nombre
+            animator.Play("DrunkMove"); // Reproduce la animación por su nombre
         }
+
+        // Programa la destrucción del personaje después de los segundos especificados
+        Invoke("DestruirPersonaje", segundosParaDestruir);
     }
 
     private void Update()
@@ -37,6 +44,9 @@ public class MoverPersonaje : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Detiene el movimiento y reproduce una animación Idle (opcional).
+    /// </summary>
     public void DetenerMovimiento()
     {
         mover = false;
@@ -47,5 +57,14 @@ public class MoverPersonaje : MonoBehaviour
         {
             animator.Play("Idle"); // Reproduce la animación Idle por su nombre
         }
+    }
+
+    /// <summary>
+    /// Destruye el objeto del personaje.
+    /// </summary>
+    private void DestruirPersonaje()
+    {
+        Debug.Log("El personaje ha sido destruido.");
+        Destroy(gameObject); // Destruye el objeto del personaje
     }
 }

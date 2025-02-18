@@ -17,7 +17,16 @@ public class TriggerZone : MonoBehaviour
             {
                 Debug.Log($"Jugador detectado en la zona. Activando evento para estado {estadoRequerido}...");
                 activado = true;
-                onPlayerEnter.Invoke(); // Activa el evento
+
+                // Invoca el evento y pasa el tiempo al método ActivarMovimiento
+                onPlayerEnter.Invoke();
+
+                // Si necesitas acceder directamente al personaje, puedes hacerlo aquí
+                MoverPersonaje moverPersonaje = other.GetComponent<MoverPersonaje>();
+                if (moverPersonaje != null)
+                {
+                    moverPersonaje.ActivarMovimiento();
+                }
 
                 // Avanza al siguiente estado
                 TriggerManager.instance.AvanzarEstado();
