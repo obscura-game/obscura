@@ -8,7 +8,7 @@ public class PhoneManager : MonoBehaviour
 {
     public GameObject PhoneCanvas;
     public ScrollRect chatScroll;
-    public Transform chatContent;
+    public Transform chatContentNPC, chatContentPlayer;
     public TMP_InputField inputField;
     public GameObject PlayerMessagePrefab;
     public GameObject NPCMessagePrefab;
@@ -75,13 +75,20 @@ public class PhoneManager : MonoBehaviour
 
     void AddMessage(string text, bool isPlayer)
     {
-        GameObject message = Instantiate(isPlayer ? PlayerMessagePrefab : NPCMessagePrefab, chatContent);
+        GameObject message = Instantiate(isPlayer ? PlayerMessagePrefab : NPCMessagePrefab);
         TMP_Text messageText = message.GetComponentInChildren<TMP_Text>();
         messageText.text = text;
-        messageText.enableAutoSizing = true;
-        messageText.alignment = isPlayer ? TextAlignmentOptions.Right : TextAlignmentOptions.Left;
 
-        LayoutRebuilder.ForceRebuildLayoutImmediate(chatContent.GetComponent<RectTransform>());
+        if(isPlayer)
+        {
+            message.transform.SetParent(chatContentPlayer);
+        }
+        else
+            message.transform.SetParent(chatContentNPC);
+        //messageText.enableAutoSizing = true;
+
+        //LayoutRebuilder.ForceRebuildLayoutImmediate(chatContent.GetComponent<RectTransform>());
+
         StartCoroutine(ScrollToBottom());
 
         if (isPlayer && playerNotificationSound != null)
