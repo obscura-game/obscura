@@ -5,6 +5,7 @@ public class TriggerZone : MonoBehaviour
 {
     public UnityEvent onPlayerEnter; // Evento que se activará cuando el jugador entre
     public int estadoRequerido = 0;  // Estado requerido para activar este trigger
+    public bool aumentarEstado = true; // Determina si este trigger aumenta el estado al ser activado
     private bool activado = false;   // Para asegurarse de que el evento solo se active una vez
 
     private void OnTriggerEnter(Collider other)
@@ -18,7 +19,7 @@ public class TriggerZone : MonoBehaviour
                 Debug.Log($"Jugador detectado en la zona. Activando evento para estado {estadoRequerido}...");
                 activado = true;
 
-                // Invoca el evento y pasa el tiempo al método ActivarMovimiento
+                // Invoca el evento
                 onPlayerEnter.Invoke();
 
                 // Si necesitas acceder directamente al personaje, puedes hacerlo aquí
@@ -28,8 +29,16 @@ public class TriggerZone : MonoBehaviour
                     moverPersonaje.ActivarMovimiento();
                 }
 
-                // Avanza al siguiente estado
-                TriggerManager.instance.AvanzarEstado();
+                // Avanza al siguiente estado solo si está configurado para hacerlo
+                if (aumentarEstado)
+                {
+                    TriggerManager.instance.AvanzarEstado();
+                    Debug.Log("Estado avanzado.");
+                }
+                else
+                {
+                    Debug.Log("Este trigger no avanza el estado.");
+                }
             }
             else
             {
