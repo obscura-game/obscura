@@ -1,9 +1,7 @@
 using UnityEngine;
-using UnityEngine.Events;
 
 public class TriggerZone : MonoBehaviour
 {
-    public UnityEvent onPlayerEnter; // Evento que se activará cuando el jugador entre
     public int estadoRequerido = 0;  // Estado requerido para activar este trigger
     public bool aumentarEstado = true; // Determina si este trigger aumenta el estado al ser activado
     private bool activado = false;   // Para asegurarse de que el evento solo se active una vez
@@ -19,14 +17,11 @@ public class TriggerZone : MonoBehaviour
                 Debug.Log($"Jugador detectado en la zona. Activando evento para estado {estadoRequerido}...");
                 activado = true;
 
-                // Invoca el evento
-                onPlayerEnter.Invoke();
-
-                // Si necesitas acceder directamente al personaje, puedes hacerlo aquí
-                MoverPersonaje moverPersonaje = other.GetComponent<MoverPersonaje>();
-                if (moverPersonaje != null)
+                // Buscar todos los componentes que implementen ITriggerAction en este GameObject
+                ITriggerAction[] actions = GetComponents<ITriggerAction>();
+                foreach (var action in actions)
                 {
-                    moverPersonaje.ActivarMovimiento();
+                    action.Activate(); // Activa cada comportamiento encontrado
                 }
 
                 // Avanza al siguiente estado solo si está configurado para hacerlo
