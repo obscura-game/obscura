@@ -7,6 +7,8 @@ TagManager:
   - LightedRoom
   - Interactable
   - PickUp
+  - Generador
+  - GenLights
   layers:
   - Default
   - TransparentFX
