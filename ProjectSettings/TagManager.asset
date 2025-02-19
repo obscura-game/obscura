@@ -21,15 +21,15 @@ TagManager:
   - Player
   - Interactable
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - PS-Wall
+  - PS-Floor
+  - PS-Decor
+  - P0-Wall
+  - P0-Floor
+  - P0-Decor
+  - P1-Wall
+  - P1-Floor
+  - P1-Decor
   - 
   - 
   - 
