@@ -17,18 +17,14 @@ public class MoverPersonaje : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Activa el movimiento y programa la destrucción del personaje después de un tiempo.
-    /// </summary>
     public void ActivarMovimiento()
     {
         mover = true;
-        Debug.Log("Movimiento activado. Reproduciendo animación DrunkMove.");
+        Debug.Log("Movimiento activado. Reproduciendo animación Walking.");
 
-        // Activa directamente la animación DrunkMove
         if (animator != null)
         {
-            animator.Play("DrunkMove"); // Reproduce la animación por su nombre
+            animator.SetBool("IsWalking", true); // Activa la animación Walking usando un parámetro
         }
 
         // Programa la destrucción del personaje después de los segundos especificados
@@ -45,17 +41,16 @@ public class MoverPersonaje : MonoBehaviour
     }
 
     /// <summary>
-    /// Detiene el movimiento y reproduce una animación Idle (opcional).
+    /// Detiene el movimiento y detiene la animación Walking.
     /// </summary>
     public void DetenerMovimiento()
     {
         mover = false;
-        Debug.Log("Movimiento detenido. Volviendo a Idle.");
+        Debug.Log("Movimiento detenido. Deteniendo animación Walking.");
 
-        // Detiene el movimiento y reproduce una animación Idle (opcional)
         if (animator != null)
         {
-            animator.Play("Idle"); // Reproduce la animación Idle por su nombre
+            animator.SetBool("IsWalking", false); // Detiene la animación Walking
         }
     }
 
