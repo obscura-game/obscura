@@ -11,7 +11,7 @@ public class PlayerPickUpController : MonoBehaviour
     public GameObject off;
     private bool isOn;
 
-    private GameObject currentObject;
+    public GameObject currentObject;
     private Rigidbody currentRb;
     private Collider objCollider;
     private bool equipped;

@@ -11,6 +11,7 @@ TagManager:
   - GenLights
   - Door
   - VendingMachine
+  - Soda
   layers:
   - Default
   - TransparentFX

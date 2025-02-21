@@ -10,14 +10,14 @@ public class InteractionRaycaster : MonoBehaviour
     public Sprite defaultCrosshair;        // Crosshair por defecto
     public Sprite pickupCrosshair;         // Crosshair para objetos recogibles
     public Sprite doorCrosshair;           // Crosshair para puertas
-    public GameObject bidonGasolina;       // Referencia al bidón de gasolina que el jugador sostiene
+    public GameObject bidonGasolina;       // Referencia al bidón de gasolina
     public TMP_Text mensajeUI;             // Referencia al texto de la UI (TextMeshPro)
     private GameObject detectedObject;     // Objeto detectado actualmente
     private int interactableLayerMask;     // Máscara de capa para objetos interactuables
     private bool generadorArreglado = false; // Indica si el generador ya ha sido arreglado
 
-    // Método para obtener el objeto detectado actualmente
     public GameObject GetDetectedObject() => detectedObject;
+    private PlayerPickUpController playerPickUpController; // Referencia al script de recogida
 
     private void Start()
     {
@@ -49,6 +49,13 @@ public class InteractionRaycaster : MonoBehaviour
             crosshairImage.sprite = defaultCrosshair;
             crosshairImage.enabled = true;
         }
+
+        // Obtener el script PlayerPickUpController del jugador
+        playerPickUpController = GetComponent<PlayerPickUpController>();
+        if (playerPickUpController == null)
+        {
+            Debug.LogError("No se encontró el script PlayerPickUpController en el jugador.");
+        }
     }
 
     private void Update()
@@ -77,6 +84,8 @@ public class InteractionRaycaster : MonoBehaviour
                 crosshairImage.sprite = doorCrosshair;
             else if (detectedObject.CompareTag("VendingMachine"))
                 crosshairImage.sprite = doorCrosshair; // Usa el mismo crosshair o uno diferente
+            else if (detectedObject.CompareTag("Generador"))
+                crosshairImage.sprite = doorCrosshair; // Usa el mismo crosshair o uno diferente
             else
                 crosshairImage.sprite = defaultCrosshair;
 
@@ -91,9 +100,17 @@ public class InteractionRaycaster : MonoBehaviour
                 {
                     InteractWithVendingMachine(detectedObject); // Interactuar con la máquina expendedora
                 }
-                else if (detectedObject.CompareTag("Generador") && !generadorArreglado && bidonGasolina != null && bidonGasolina.activeInHierarchy)
+                else if (detectedObject.CompareTag("Generador") && !generadorArreglado)
                 {
-                    ArreglarGenerador(); // Interactuar con el generador
+                    // Verificar si el jugador tiene el bidón de gasolina en la mano
+                    if (playerPickUpController != null && playerPickUpController.currentObject == bidonGasolina)
+                    {
+                        ArreglarGenerador(); // Interactuar con el generador
+                    }
+                    else
+                    {
+                        Debug.Log("No tienes el bidón de gasolina en la mano.");
+                    }
                 }
             }
         }
@@ -110,7 +127,6 @@ public class InteractionRaycaster : MonoBehaviour
     /// </summary>
     private void InteractWithDoor(GameObject door)
     {
-        // Buscar el componente DoorController en el objeto detectado o sus hijos
         DoorController doorController = door.GetComponentInChildren<DoorController>();
         if (doorController != null)
         {
@@ -128,6 +144,23 @@ public class InteractionRaycaster : MonoBehaviour
         else
         {
             Debug.LogWarning("La puerta detectada no tiene un componente DoorController.");
+        }
+    }
+
+    /// <summary>
+    /// Interactúa con una máquina expendedora.
+    /// </summary>
+    private void InteractWithVendingMachine(GameObject vendingMachine)
+    {
+        VendingMachine vendingMachineScript = vendingMachine.GetComponent<VendingMachine>();
+        if (vendingMachineScript != null)
+        {
+            Debug.Log("Interactuando con la máquina expendedora...");
+            vendingMachineScript.DispenseSoda(); // Dispensar un refresco
+        }
+        else
+        {
+            Debug.LogWarning("La máquina expendedora no tiene un componente VendingMachine.");
         }
     }
 
@@ -158,22 +191,11 @@ public class InteractionRaycaster : MonoBehaviour
         {
             Debug.LogError("No se encontró ningún LightController en la escena.");
         }
-    }
 
-    /// <summary>
-    /// Interactúa con una máquina expendedora.
-    /// </summary>
-    private void InteractWithVendingMachine(GameObject vendingMachine)
-    {
-        VendingMachine vendingMachineScript = vendingMachine.GetComponent<VendingMachine>();
-        if (vendingMachineScript != null)
+        // Consumir el bidón de gasolina
+        if (bidonGasolina != null)
         {
-            Debug.Log("Interactuando con la máquina expendedora...");
-            vendingMachineScript.DispenseSoda(); // Dispensar un refresco
-        }
-        else
-        {
-            Debug.LogWarning("La máquina expendedora no tiene un componente VendingMachine.");
+            bidonGasolina.SetActive(false); // Desactivar el bidón de gasolina
         }
     }
 
