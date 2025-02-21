@@ -30,9 +30,8 @@ public class SettingsManager : MonoBehaviour
     private void Update()
     {
         // Detectar la tecla T para alternar el canvas
-        if (Input.GetKeyDown(KeyCode.T))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Debug.Log("Tecla T presionada. Alternando visibilidad del canvas...");
             ToggleSettingsCanvas();
         }
     }
@@ -47,17 +46,20 @@ public class SettingsManager : MonoBehaviour
             bool isActive = settingsCanvas.gameObject.activeSelf;
             settingsCanvas.gameObject.SetActive(!isActive);
 
-            Debug.Log($"Canvas activado: {!isActive}");
+            // Activar/desactivar el cursor del ratón
+            Cursor.visible = !isActive; // Muestra/oculta el cursor
+            Cursor.lockState = isActive ? CursorLockMode.Locked : CursorLockMode.None;
+
+            // Pausar/reanudar el juego
+            Time.timeScale = isActive ? 1f : 0f;
+
+            Debug.Log($"Canvas activado: {!isActive}. Cursor visible: {Cursor.visible}. TimeScale: {Time.timeScale}");
 
             // Guardar los ajustes cuando se cierra el canvas
             if (isActive)
             {
                 SaveSettings();
             }
-        }
-        else
-        {
-            Debug.LogError("El Canvas no está asignado en el Inspector.");
         }
     }
 
