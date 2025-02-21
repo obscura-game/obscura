@@ -80,8 +80,8 @@ public class InteractionRaycaster : MonoBehaviour
             else
                 crosshairImage.sprite = defaultCrosshair;
 
-            // Verificar si el jugador presiona F para interactuar
-            if (Input.GetKeyDown(KeyCode.F)) // Detectar la tecla F
+            // Verificar si el jugador presiona E para interactuar
+            if (Input.GetKeyDown(KeyCode.E)) // Detectar la tecla E
             {
                 if (detectedObject.CompareTag("Door"))
                 {
