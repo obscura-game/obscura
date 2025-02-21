@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro; // Importa el namespace de TextMeshPro
+using TMPro;
 
 public class InteractionRaycaster : MonoBehaviour
 {
@@ -16,6 +16,7 @@ public class InteractionRaycaster : MonoBehaviour
     private int interactableLayerMask;     // Máscara de capa para objetos interactuables
     private bool generadorArreglado = false; // Indica si el generador ya ha sido arreglado
 
+    // Método para obtener el objeto detectado actualmente
     public GameObject GetDetectedObject() => detectedObject;
 
     private void Start()
@@ -28,12 +29,10 @@ public class InteractionRaycaster : MonoBehaviour
         {
             Debug.LogError("La cámara no está asignada en el Inspector.");
         }
-
         if (crosshairImage == null)
         {
             Debug.LogError("El crosshair no está asignado en el Inspector.");
         }
-
         if (mensajeUI == null)
         {
             Debug.LogError("El componente TMP_Text no está asignado en el Inspector.");
@@ -53,42 +52,73 @@ public class InteractionRaycaster : MonoBehaviour
     }
 
     private void Update()
+{
+    Ray ray = cam.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
+
+    // Realizar el raycast solo en la capa "Interactable"
+    if (Physics.Raycast(ray, out RaycastHit hit, interactionRange, interactableLayerMask))
     {
-        Ray ray = cam.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
+        detectedObject = hit.transform.gameObject;
 
-        // Realizar el raycast solo en la capa "Interactable"
-        if (Physics.Raycast(ray, out RaycastHit hit, interactionRange, interactableLayerMask))
+        // Buscar un hijo con el tag "Door" si el objeto detectado no tiene el tag
+        if (!detectedObject.CompareTag("Door"))
         {
-            detectedObject = hit.transform.gameObject;
-
-            // Cambiar el crosshair según el tag del objeto
-            if (detectedObject.CompareTag("PickUp"))
-                crosshairImage.sprite = pickupCrosshair;
-            else if (detectedObject.CompareTag("Door"))
-                crosshairImage.sprite = doorCrosshair;
-            else
-                crosshairImage.sprite = defaultCrosshair;
-
-            // Verificar si el jugador hace clic y sostiene el bidón de gasolina
-            if (Input.GetMouseButtonDown(0)) // 0 es el botón izquierdo del ratón
+            Transform doorChild = detectedObject.transform.GetComponentInChildren<Transform>(true); // Busca en los hijos
+            if (doorChild != null && doorChild.CompareTag("Door"))
             {
-                if (bidonGasolina != null && bidonGasolina.activeInHierarchy) // Si el bidón está activo (sostenido)
-                {
-                    if (detectedObject.CompareTag("Generador") && !generadorArreglado) // Verificar si el objeto es el generador y no ha sido arreglado
-                    {
-                        ArreglarGenerador();
-                    }
-                }
+                detectedObject = doorChild.gameObject;
             }
+        }
+
+        // Cambiar el crosshair según el tag del objeto
+        if (detectedObject.CompareTag("PickUp"))
+            crosshairImage.sprite = pickupCrosshair;
+        else if (detectedObject.CompareTag("Door"))
+            crosshairImage.sprite = doorCrosshair;
+        else
+            crosshairImage.sprite = defaultCrosshair;
+
+        // Verificar si el jugador presiona F para interactuar
+        if (Input.GetKeyDown(KeyCode.F)) // Detectar la tecla F
+        {
+            if (detectedObject.CompareTag("Door"))
+            {
+                InteractWithDoor(detectedObject); // Interactuar con la puerta
+            }
+            else if (detectedObject.CompareTag("Generador") && !generadorArreglado && bidonGasolina != null && bidonGasolina.activeInHierarchy)
+            {
+                ArreglarGenerador(); // Interactuar con el generador
+            }
+        }
+    }
+    else
+    {
+        // Si no se detecta un objeto interactuable, mostrar el crosshair por defecto
+        detectedObject = null;
+        crosshairImage.sprite = defaultCrosshair;
+    }
+}
+
+    /// <summary>
+    /// Interactúa con una puerta.
+    /// </summary>
+    private void InteractWithDoor(GameObject door)
+    {
+        DoorController doorController = door.GetComponent<DoorController>();
+        if (doorController != null)
+        {
+            Debug.Log("Interactuando con la puerta...");
+            doorController.OpenDoor(); // Abre la puerta
         }
         else
         {
-            // Si no se detecta un objeto interactuable, mostrar el crosshair por defecto
-            detectedObject = null;
-            crosshairImage.sprite = defaultCrosshair;
+            Debug.LogWarning("La puerta detectada no tiene un componente DoorController.");
         }
     }
 
+    /// <summary>
+    /// Arregla el generador.
+    /// </summary>
     private void ArreglarGenerador()
     {
         generadorArreglado = true; // Marcar el generador como arreglado
@@ -99,7 +129,6 @@ public class InteractionRaycaster : MonoBehaviour
         {
             mensajeUI.text = "Generador arreglado";
             mensajeUI.gameObject.SetActive(true);
-
             // Ocultar el mensaje después de 2 segundos
             Invoke("OcultarMensaje", 2f);
         }

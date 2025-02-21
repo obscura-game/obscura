@@ -8490,9 +8490,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 214668572}
-  m_Layer: 0
+  - component: {fileID: 214668574}
+  m_Layer: 9
   m_Name: Puerta
-  m_TagString: Untagged
+  m_TagString: Door
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8512,8 +8513,29 @@ Transform:
   m_Children:
   - {fileID: 979768575}
   - {fileID: 1558482669}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1141351255}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &214668574
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 214668571}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &218351700
 GameObject:
   m_ObjectHideFlags: 0
@@ -44791,7 +44813,7 @@ GameObject:
   - component: {fileID: 979768575}
   - component: {fileID: 979768577}
   - component: {fileID: 979768576}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Puerta-Marco
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73319,9 +73341,9 @@ GameObject:
   - component: {fileID: 1558482672}
   - component: {fileID: 1558482671}
   - component: {fileID: 1558482670}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cylinder
-  m_TagString: Untagged
+  m_TagString: Door
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -73354,9 +73376,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ce38e7ac8dab484bb0bce9e33e1b731, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hingeOffset: {x: 0, y: 0, z: 0}
-  openAngle: 90
-  speed: 2
+  maxAngle: 90
+  rotationSpeed: 2
 --- !u!136 &1558482671
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -92518,7 +92539,7 @@ GameObject:
   - component: {fileID: 2029905161}
   - component: {fileID: 2029905163}
   - component: {fileID: 2029905162}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Puerta-Mango
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95281,7 +95302,7 @@ GameObject:
   - component: {fileID: 2059770101}
   - component: {fileID: 2059770100}
   - component: {fileID: 2059770099}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Puerta-Madera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95316,9 +95337,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ce38e7ac8dab484bb0bce9e33e1b731, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hingeOffset: {x: -0.5, y: 0, z: 0}
-  openAngle: 90
-  speed: 2
+  maxAngle: 90
+  rotationSpeed: 2
 --- !u!23 &2059770100
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -101197,6 +101217,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1680850529}
+    - targetCorrespondingSourceObject: {fileID: 4047173087285524968, guid: 24d652c6f7dd97a49a3c146f08a67327,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 214668572}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 24d652c6f7dd97a49a3c146f08a67327, type: 3}
 --- !u!4 &672095521957950131 stripped
@@ -135234,4 +135258,3 @@ SceneRoots:
   - {fileID: 513503629}
   - {fileID: 264031206}
   - {fileID: 1135130002}
-  - {fileID: 214668572}

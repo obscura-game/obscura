@@ -2,36 +2,76 @@ using UnityEngine;
 
 public class DoorController : MonoBehaviour
 {
-    public Vector3 hingeOffset = new Vector3(-0.5f, 0, 0); // Ajusta la posición de la bisagra según el tamaño de la puerta
-    public float openAngle = 90f; // Ángulo máximo de apertura
-    public float speed = 2f; // Velocidad de apertura/cierre
-    private bool isOpen = false;
-    private float currentAngle = 0f;
+    [Tooltip("Ángulo máximo de apertura de la puerta (en grados).")]
+    public float maxAngle = 90f; // Ángulo de apertura (90 grados por defecto)
 
-    private Vector3 hingePosition;
+    [Tooltip("Velocidad de rotación de la puerta.")]
+    public float rotationSpeed = 2f; // Velocidad de apertura/cierre
 
-    void Start()
+    private bool isOpening = false; // Indica si la puerta está abriéndose
+    private bool isClosing = false; // Indica si la puerta está cerrándose
+    private Quaternion closedRotation; // Rotación inicial (cerrada)
+    private Quaternion openRotation; // Rotación final (abierta)
+
+    private void Start()
     {
-        // Calculamos la posición de la bisagra en el mundo
-        hingePosition = transform.position + transform.TransformVector(hingeOffset);
+        // Guarda la rotación inicial de la puerta (cerrada)
+        closedRotation = transform.rotation;
+
+        // Calcula la rotación final (abierta)
+        openRotation = Quaternion.Euler(transform.eulerAngles + new Vector3(0, maxAngle, 0));
     }
 
-    void Update()
+    private void Update()
     {
-        // Pulsar "E" para abrir/cerrar la puerta
-        if (Input.GetKeyDown(KeyCode.E))
+        // Abre la puerta si está en proceso de abrirse
+        if (isOpening)
         {
-            isOpen = !isOpen;
+            transform.rotation = Quaternion.Lerp(transform.rotation, openRotation, Time.deltaTime * rotationSpeed);
+
+            // Detener el movimiento cuando la puerta está completamente abierta
+            if (Quaternion.Angle(transform.rotation, openRotation) < 1f)
+            {
+                isOpening = false;
+            }
         }
 
-        // Calcular el ángulo objetivo
-        float targetAngle = isOpen ? openAngle : 0f;
+        // Cierra la puerta si está en proceso de cerrarse
+        if (isClosing)
+        {
+            transform.rotation = Quaternion.Lerp(transform.rotation, closedRotation, Time.deltaTime * rotationSpeed);
 
-        // Suavizar la rotación
-        float step = speed * Time.deltaTime;
-        currentAngle = Mathf.Lerp(currentAngle, targetAngle, step);
+            // Detener el movimiento cuando la puerta está completamente cerrada
+            if (Quaternion.Angle(transform.rotation, closedRotation) < 1f)
+            {
+                isClosing = false;
+            }
+        }
+    }
 
-        // Rotar la puerta alrededor de la bisagra
-        transform.RotateAround(hingePosition, Vector3.up, currentAngle - transform.eulerAngles.y);
+    /// <summary>
+    /// Abre la puerta.
+    /// </summary>
+    public void OpenDoor()
+    {
+        if (!isOpening && !isClosing)
+        {
+            isOpening = true;
+            isClosing = false;
+            Debug.Log("Abriendo puerta...");
+        }
+    }
+
+    /// <summary>
+    /// Cierra la puerta.
+    /// </summary>
+    public void CloseDoor()
+    {
+        if (!isOpening && !isClosing)
+        {
+            isClosing = true;
+            isOpening = false;
+            Debug.Log("Cerrando puerta...");
+        }
     }
 }

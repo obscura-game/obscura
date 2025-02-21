@@ -9,6 +9,7 @@ TagManager:
   - PickUp
   - Generador
   - GenLights
+  - Door
   layers:
   - Default
   - TransparentFX
