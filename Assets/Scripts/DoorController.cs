@@ -74,4 +74,12 @@ public class DoorController : MonoBehaviour
             Debug.Log("Cerrando puerta...");
         }
     }
+
+    /// <summary>
+    /// Verifica si la puerta está abierta.
+    /// </summary>
+    public bool IsDoorOpen()
+    {
+        return Quaternion.Angle(transform.rotation, openRotation) < 1f;
+    }
 }

@@ -52,63 +52,78 @@ public class InteractionRaycaster : MonoBehaviour
     }
 
     private void Update()
-{
-    Ray ray = cam.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
-
-    // Realizar el raycast solo en la capa "Interactable"
-    if (Physics.Raycast(ray, out RaycastHit hit, interactionRange, interactableLayerMask))
     {
-        detectedObject = hit.transform.gameObject;
+        Ray ray = cam.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
 
-        // Buscar un hijo con el tag "Door" si el objeto detectado no tiene el tag
-        if (!detectedObject.CompareTag("Door"))
+        // Realizar el raycast solo en la capa "Interactable"
+        if (Physics.Raycast(ray, out RaycastHit hit, interactionRange, interactableLayerMask))
         {
-            Transform doorChild = detectedObject.transform.GetComponentInChildren<Transform>(true); // Busca en los hijos
-            if (doorChild != null && doorChild.CompareTag("Door"))
+            detectedObject = hit.transform.gameObject;
+
+            // Buscar un hijo con el tag "Door" si el objeto detectado no tiene el tag
+            if (!detectedObject.CompareTag("Door"))
             {
-                detectedObject = doorChild.gameObject;
+                Transform doorChild = detectedObject.transform.GetComponentInChildren<Transform>(true); // Busca en los hijos
+                if (doorChild != null && doorChild.CompareTag("Door"))
+                {
+                    detectedObject = doorChild.gameObject;
+                }
+            }
+
+            // Cambiar el crosshair según el tag del objeto
+            if (detectedObject.CompareTag("PickUp"))
+                crosshairImage.sprite = pickupCrosshair;
+            else if (detectedObject.CompareTag("Door"))
+                crosshairImage.sprite = doorCrosshair;
+            else if (detectedObject.CompareTag("VendingMachine"))
+                crosshairImage.sprite = doorCrosshair; // Usa el mismo crosshair o uno diferente
+            else
+                crosshairImage.sprite = defaultCrosshair;
+
+            // Verificar si el jugador presiona F para interactuar
+            if (Input.GetKeyDown(KeyCode.F)) // Detectar la tecla F
+            {
+                if (detectedObject.CompareTag("Door"))
+                {
+                    InteractWithDoor(detectedObject); // Interactuar con la puerta
+                }
+                else if (detectedObject.CompareTag("VendingMachine"))
+                {
+                    InteractWithVendingMachine(detectedObject); // Interactuar con la máquina expendedora
+                }
+                else if (detectedObject.CompareTag("Generador") && !generadorArreglado && bidonGasolina != null && bidonGasolina.activeInHierarchy)
+                {
+                    ArreglarGenerador(); // Interactuar con el generador
+                }
             }
         }
-
-        // Cambiar el crosshair según el tag del objeto
-        if (detectedObject.CompareTag("PickUp"))
-            crosshairImage.sprite = pickupCrosshair;
-        else if (detectedObject.CompareTag("Door"))
-            crosshairImage.sprite = doorCrosshair;
         else
-            crosshairImage.sprite = defaultCrosshair;
-
-        // Verificar si el jugador presiona F para interactuar
-        if (Input.GetKeyDown(KeyCode.F)) // Detectar la tecla F
         {
-            if (detectedObject.CompareTag("Door"))
-            {
-                InteractWithDoor(detectedObject); // Interactuar con la puerta
-            }
-            else if (detectedObject.CompareTag("Generador") && !generadorArreglado && bidonGasolina != null && bidonGasolina.activeInHierarchy)
-            {
-                ArreglarGenerador(); // Interactuar con el generador
-            }
+            // Si no se detecta un objeto interactuable, mostrar el crosshair por defecto
+            detectedObject = null;
+            crosshairImage.sprite = defaultCrosshair;
         }
     }
-    else
-    {
-        // Si no se detecta un objeto interactuable, mostrar el crosshair por defecto
-        detectedObject = null;
-        crosshairImage.sprite = defaultCrosshair;
-    }
-}
 
     /// <summary>
     /// Interactúa con una puerta.
     /// </summary>
     private void InteractWithDoor(GameObject door)
     {
-        DoorController doorController = door.GetComponent<DoorController>();
+        // Buscar el componente DoorController en el objeto detectado o sus hijos
+        DoorController doorController = door.GetComponentInChildren<DoorController>();
         if (doorController != null)
         {
-            Debug.Log("Interactuando con la puerta...");
-            doorController.OpenDoor(); // Abre la puerta
+            if (doorController.IsDoorOpen())
+            {
+                Debug.Log("Cerrando la puerta...");
+                doorController.CloseDoor(); // Cierra la puerta
+            }
+            else
+            {
+                Debug.Log("Abriendo la puerta...");
+                doorController.OpenDoor(); // Abre la puerta
+            }
         }
         else
         {
@@ -142,6 +157,23 @@ public class InteractionRaycaster : MonoBehaviour
         else
         {
             Debug.LogError("No se encontró ningún LightController en la escena.");
+        }
+    }
+
+    /// <summary>
+    /// Interactúa con una máquina expendedora.
+    /// </summary>
+    private void InteractWithVendingMachine(GameObject vendingMachine)
+    {
+        VendingMachine vendingMachineScript = vendingMachine.GetComponent<VendingMachine>();
+        if (vendingMachineScript != null)
+        {
+            Debug.Log("Interactuando con la máquina expendedora...");
+            vendingMachineScript.DispenseSoda(); // Dispensar un refresco
+        }
+        else
+        {
+            Debug.LogWarning("La máquina expendedora no tiene un componente VendingMachine.");
         }
     }
 

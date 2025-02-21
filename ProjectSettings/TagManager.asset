@@ -10,6 +10,7 @@ TagManager:
   - Generador
   - GenLights
   - Door
+  - VendingMachine
   layers:
   - Default
   - TransparentFX
