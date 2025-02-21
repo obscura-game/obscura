@@ -49,9 +49,7 @@ public class DoorController : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Abre la puerta.
-    /// </summary>
+    // Abre la puerta.
     public void OpenDoor()
     {
         if (!isOpening && !isClosing)
@@ -62,9 +60,7 @@ public class DoorController : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Cierra la puerta.
-    /// </summary>
+    // Cierra la puerta.
     public void CloseDoor()
     {
         if (!isOpening && !isClosing)
@@ -75,9 +71,7 @@ public class DoorController : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Verifica si la puerta está abierta.
-    /// </summary>
+    // Verifica si la puerta está abierta.
     public bool IsDoorOpen()
     {
         return Quaternion.Angle(transform.rotation, openRotation) < 1f;
