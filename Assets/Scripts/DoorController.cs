@@ -8,16 +8,18 @@ public class DoorController : MonoBehaviour
     [Tooltip("Velocidad de rotación de la puerta.")]
     public float rotationSpeed = 2f; // Velocidad de apertura/cierre
 
+    [Tooltip("Tiempo en segundos antes de que la puerta se cierre automáticamente.")]
+    public float autoCloseDelay = 5f; // Tiempo antes de cerrarse automáticamente
+
     private bool isOpening = false; // Indica si la puerta está abriéndose
     private bool isClosing = false; // Indica si la puerta está cerrándose
     private Quaternion closedRotation; // Rotación inicial (cerrada)
-    private Quaternion openRotation; // Rotación final (abierta)
+    private Quaternion openRotation;  // Rotación final (abierta)
 
     private void Start()
     {
         // Guarda la rotación inicial de la puerta (cerrada)
         closedRotation = transform.rotation;
-
         // Calcula la rotación final (abierta)
         openRotation = Quaternion.Euler(transform.eulerAngles + new Vector3(0, maxAngle, 0));
     }
@@ -28,7 +30,6 @@ public class DoorController : MonoBehaviour
         if (isOpening)
         {
             transform.rotation = Quaternion.Lerp(transform.rotation, openRotation, Time.deltaTime * rotationSpeed);
-
             // Detener el movimiento cuando la puerta está completamente abierta
             if (Quaternion.Angle(transform.rotation, openRotation) < 1f)
             {
@@ -40,7 +41,6 @@ public class DoorController : MonoBehaviour
         if (isClosing)
         {
             transform.rotation = Quaternion.Lerp(transform.rotation, closedRotation, Time.deltaTime * rotationSpeed);
-
             // Detener el movimiento cuando la puerta está completamente cerrada
             if (Quaternion.Angle(transform.rotation, closedRotation) < 1f)
             {
@@ -49,7 +49,9 @@ public class DoorController : MonoBehaviour
         }
     }
 
-    // Abre la puerta.
+    /// <summary>
+    /// Abre la puerta.
+    /// </summary>
     public void OpenDoor()
     {
         if (!isOpening && !isClosing)
@@ -57,10 +59,15 @@ public class DoorController : MonoBehaviour
             isOpening = true;
             isClosing = false;
             Debug.Log("Abriendo puerta...");
+
+            // Programar el cierre automático después del tiempo especificado
+            Invoke("AutoCloseDoor", autoCloseDelay);
         }
     }
 
-    // Cierra la puerta.
+    /// <summary>
+    /// Cierra la puerta.
+    /// </summary>
     public void CloseDoor()
     {
         if (!isOpening && !isClosing)
@@ -69,9 +76,27 @@ public class DoorController : MonoBehaviour
             isOpening = false;
             Debug.Log("Cerrando puerta...");
         }
+
+        // Cancelar cualquier cierre automático programado
+        CancelInvoke("AutoCloseDoor");
     }
 
-    // Verifica si la puerta está abierta.
+    /// <summary>
+    /// Cierra la puerta automáticamente.
+    /// </summary>
+    private void AutoCloseDoor()
+    {
+        if (!isOpening && !isClosing)
+        {
+            isClosing = true;
+            isOpening = false;
+            Debug.Log("Cerrando puerta automáticamente...");
+        }
+    }
+
+    /// <summary>
+    /// Verifica si la puerta está abierta.
+    /// </summary>
     public bool IsDoorOpen()
     {
         return Quaternion.Angle(transform.rotation, openRotation) < 1f;

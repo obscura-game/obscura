@@ -60,6 +60,19 @@ public class InteractionRaycaster : MonoBehaviour
 
     private void Update()
     {
+        // Verificar si el jugador presiona E para interactuar
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            // Verificar si hay un Canvas activo de alguna caja fuerte
+            SafeController activeSafe = FindObjectOfType<SafeController>();
+            if (activeSafe != null && activeSafe.safeCanvas != null && activeSafe.safeCanvas.activeInHierarchy)
+            {
+                // Si el Canvas está activo, ocúltalo
+                activeSafe.HideCodeCanvas();
+                return; // Salir del método para evitar otras interacciones
+            }
+        }
+
         Ray ray = cam.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
 
         // Realizar el raycast solo en la capa "Interactable"
@@ -133,8 +146,16 @@ public class InteractionRaycaster : MonoBehaviour
         SafeController safeController = safe.GetComponent<SafeController>();
         if (safeController != null)
         {
-            Debug.Log("Interactuando con la caja fuerte...");
-            safeController.ShowCodeCanvas(); // Mostrar el Canvas de entrada de código
+            if (safeController.safeCanvas.activeInHierarchy)
+            {
+                // Si el Canvas está activo, ocúltalo
+                safeController.HideCodeCanvas();
+            }
+            else
+            {
+                // Si el Canvas no está activo, muéstralo
+                safeController.ShowCodeCanvas();
+            }
         }
         else
         {

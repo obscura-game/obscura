@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,7 +10,7 @@ public class SafeController : MonoBehaviour
     public float openAngle = 90f;      // Ángulo al que se abre la puerta
     private bool isOpen = false;       // Indica si la caja fuerte está abierta
 
-    private InputField codeInputField; // Referencia al campo de entrada
+    public TMP_InputField codeInputField;  // Referencia manual al InputField (asignar en el Inspector)
     private Quaternion closedRotation; // Rotación inicial (cerrada)
     private Quaternion openRotation;   // Rotación final (abierta)
 
@@ -19,14 +20,10 @@ public class SafeController : MonoBehaviour
         closedRotation = door.transform.localRotation;
         openRotation = Quaternion.Euler(door.transform.localEulerAngles + new Vector3(0, openAngle, 0));
 
-        // Obtener el InputField del Canvas
-        if (safeCanvas != null)
+        // Verificar que el InputField esté asignado
+        if (codeInputField == null)
         {
-            codeInputField = safeCanvas.GetComponentInChildren<InputField>();
-            if (codeInputField == null)
-            {
-                Debug.LogError("No se encontró un InputField en el Canvas de la caja fuerte.");
-            }
+            Debug.LogError("No se encontró un InputField en el Canvas de la caja fuerte. Asígna uno en el Inspector.");
         }
     }
 
@@ -36,6 +33,12 @@ public class SafeController : MonoBehaviour
     public void TryOpenSafe()
     {
         if (isOpen) return; // Si ya está abierta, no hacer nada
+
+        if (codeInputField == null)
+        {
+            Debug.LogError("El InputField no está asignado. No se puede verificar el código.");
+            return;
+        }
 
         string enteredCode = codeInputField.text;
         if (enteredCode == correctCode)
@@ -47,6 +50,9 @@ public class SafeController : MonoBehaviour
         {
             Debug.Log("Código incorrecto. Intenta de nuevo.");
         }
+
+        // Ocultar el Canvas después de intentar abrir la caja fuerte
+        HideCodeCanvas();
     }
 
     /// <summary>
@@ -60,24 +66,54 @@ public class SafeController : MonoBehaviour
     }
 
     /// <summary>
-    /// Muestra el Canvas de entrada de código.
+    /// Muestra el Canvas de entrada de código y habilita el cursor.
     /// </summary>
     public void ShowCodeCanvas()
     {
         if (safeCanvas != null)
         {
             safeCanvas.SetActive(true);
+            EnableCursor(); // Habilitar el cursor
         }
     }
 
     /// <summary>
-    /// Oculta el Canvas de entrada de código.
+    /// Oculta el Canvas de entrada de código y deshabilita el cursor.
     /// </summary>
     public void HideCodeCanvas()
     {
         if (safeCanvas != null)
         {
             safeCanvas.SetActive(false);
+            DisableCursor(); // Deshabilitar el cursor
+        }
+    }
+
+    /// <summary>
+    /// Habilita el cursor y detiene el movimiento de la cámara.
+    /// </summary>
+    private void EnableCursor()
+    {
+        Cursor.lockState = CursorLockMode.None; // Desbloquear el cursor
+        Cursor.visible = true;                 // Hacer visible el cursor
+        PlayerController playerMovement = FindObjectOfType<PlayerController>();
+        if (playerMovement != null)
+        {
+            playerMovement.enabled = false;    // Desactivar el movimiento del jugador
+        }
+    }
+
+    /// <summary>
+    /// Deshabilita el cursor y reanuda el movimiento de la cámara.
+    /// </summary>
+    private void DisableCursor()
+    {
+        Cursor.lockState = CursorLockMode.Locked; // Bloquear el cursor
+        Cursor.visible = false;                  // Ocultar el cursor
+        PlayerController playerMovement = FindObjectOfType<PlayerController>();
+        if (playerMovement != null)
+        {
+            playerMovement.enabled = true;      // Reactivar el movimiento del jugador
         }
     }
 }
