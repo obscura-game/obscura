@@ -12,6 +12,7 @@ TagManager:
   - Door
   - VendingMachine
   - Soda
+  - Safe
   layers:
   - Default
   - TransparentFX

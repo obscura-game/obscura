@@ -85,6 +85,8 @@ public class InteractionRaycaster : MonoBehaviour
             else if (detectedObject.CompareTag("VendingMachine"))
                 crosshairImage.sprite = doorCrosshair; // Usa el mismo crosshair o uno diferente
             else if (detectedObject.CompareTag("Generador"))
+                crosshairImage.sprite = doorCrosshair;
+            else if (detectedObject.CompareTag("Safe"))
                 crosshairImage.sprite = doorCrosshair; // Usa el mismo crosshair o uno diferente
             else
                 crosshairImage.sprite = defaultCrosshair;
@@ -112,6 +114,10 @@ public class InteractionRaycaster : MonoBehaviour
                         Debug.Log("No tienes el bidón de gasolina en la mano.");
                     }
                 }
+                else if (detectedObject.CompareTag("Safe"))
+                {
+                    InteractWithSafe(detectedObject);
+                }
             }
         }
         else
@@ -122,9 +128,20 @@ public class InteractionRaycaster : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Interactúa con una puerta.
-    /// </summary>
+    private void InteractWithSafe(GameObject safe)
+    {
+        SafeController safeController = safe.GetComponent<SafeController>();
+        if (safeController != null)
+        {
+            Debug.Log("Interactuando con la caja fuerte...");
+            safeController.ShowCodeCanvas(); // Mostrar el Canvas de entrada de código
+        }
+        else
+        {
+            Debug.LogWarning("La caja fuerte no tiene un componente SafeController.");
+        }
+    }
+
     private void InteractWithDoor(GameObject door)
     {
         DoorController doorController = door.GetComponentInChildren<DoorController>();
