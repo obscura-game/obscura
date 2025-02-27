@@ -7,6 +7,7 @@ using TMPro;
 public class PhoneManager : MonoBehaviour
 {
     public GameObject PhoneCanvas;
+    public GameObject ControlsCanvas;
     public ScrollRect chatScroll;
     public Transform chatContentNPC, chatContentPlayer;
     public TMP_InputField inputField;
@@ -21,8 +22,9 @@ public class PhoneManager : MonoBehaviour
     void Start()
     {
         PhoneCanvas.SetActive(false);
+        ControlsCanvas.SetActive(true); // Mostrar controles al inicio
         isPhoneActive = false;
-        StartCoroutine(StartConversation());
+        StartCoroutine(HideControlsAndStartConversation());
     }
 
     void Update()
@@ -51,6 +53,13 @@ public class PhoneManager : MonoBehaviour
         }
     }
 
+    IEnumerator HideControlsAndStartConversation()
+    {
+        yield return new WaitForSeconds(20); // Espera 20 segundos antes de ocultar los controles
+        ControlsCanvas.SetActive(false);
+        StartCoroutine(StartConversation());
+    }
+
     IEnumerator StartConversation()
     {
         yield return new WaitForSeconds(10);
@@ -60,7 +69,9 @@ public class PhoneManager : MonoBehaviour
         yield return new WaitForSeconds(5);
         AddMessage("Perfecto, ten cuidado.", false);
         yield return new WaitForSeconds(4);
-        AddMessage("No hay nada de qué preocuparse, es un simple hospital abandonado.", true);
+        AddMessage("No hay nada de qué preocuparse", true);
+        yield return new WaitForSeconds(2);
+        AddMessage("es un simple hospital abandonado.", true);
     }
 
     public void SendMessage()
@@ -79,16 +90,20 @@ public class PhoneManager : MonoBehaviour
         TMP_Text messageText = message.GetComponentInChildren<TMP_Text>();
         messageText.text = text;
 
-        if(isPlayer)
+        if (isPlayer)
         {
-            message.transform.SetParent(chatContentPlayer);
+            message.transform.SetParent(chatContentPlayer, false);
         }
         else
-            message.transform.SetParent(chatContentNPC);
-        //messageText.enableAutoSizing = true;
+        {
+            message.transform.SetParent(chatContentNPC, false);
+        }
 
-        //LayoutRebuilder.ForceRebuildLayoutImmediate(chatContent.GetComponent<RectTransform>());
+        messageText.enableAutoSizing = true;
 
+        LayoutRebuilder.ForceRebuildLayoutImmediate(chatContentPlayer.GetComponent<RectTransform>());
+        LayoutRebuilder.ForceRebuildLayoutImmediate(chatContentNPC.GetComponent<RectTransform>());
+        
         StartCoroutine(ScrollToBottom());
 
         if (isPlayer && playerNotificationSound != null)
@@ -104,6 +119,7 @@ public class PhoneManager : MonoBehaviour
     IEnumerator ScrollToBottom()
     {
         yield return new WaitForEndOfFrame();
+        Canvas.ForceUpdateCanvases();
         chatScroll.verticalNormalizedPosition = 0f;
     }
 }
