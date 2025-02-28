@@ -22,7 +22,7 @@ public class PhoneManager : MonoBehaviour
     void Start()
     {
         PhoneCanvas.SetActive(false);
-        ControlsCanvas.SetActive(true); // Mostrar controles al inicio
+        ControlsCanvas.SetActive(true);
         isPhoneActive = false;
         StartCoroutine(HideControlsAndStartConversation());
     }
@@ -55,7 +55,7 @@ public class PhoneManager : MonoBehaviour
 
     IEnumerator HideControlsAndStartConversation()
     {
-        yield return new WaitForSeconds(20); // Espera 20 segundos antes de ocultar los controles
+        yield return new WaitForSeconds(20); 
         ControlsCanvas.SetActive(false);
         StartCoroutine(StartConversation());
     }
@@ -69,9 +69,7 @@ public class PhoneManager : MonoBehaviour
         yield return new WaitForSeconds(5);
         AddMessage("Perfecto, ten cuidado.", false);
         yield return new WaitForSeconds(4);
-        AddMessage("No hay nada de qué preocuparse", true);
-        yield return new WaitForSeconds(2);
-        AddMessage("es un simple hospital abandonado.", true);
+        AddMessage("No hay nada de qué preocuparse, es un simple hospital abandonado", true);
     }
 
     public void SendMessage()

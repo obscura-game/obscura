@@ -3,7 +3,20 @@ guid: 1fe40a43bf360d1498399ef681daf84d
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - PhoneCanvas: {fileID: 836919640873815061, guid: fbd137d94e1557d49a0666b00d2f7a7f,
+      type: 3}
+  - ControlsCanvas: {fileID: 3487066964136052979, guid: 89101079fcad52d4086db09a36652d52,
+      type: 3}
+  - chatScroll: {instanceID: 0}
+  - chatContentNPC: {instanceID: 0}
+  - chatContentPlayer: {instanceID: 0}
+  - inputField: {instanceID: 0}
+  - PlayerMessagePrefab: {instanceID: 0}
+  - NPCMessagePrefab: {instanceID: 0}
+  - npcNotificationSound: {instanceID: 0}
+  - playerNotificationSound: {instanceID: 0}
+  - playerController: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
