@@ -17,10 +17,9 @@ public class PhoneManager : MonoBehaviour
     public AudioSource npcNotificationSound;
     public AudioSource playerNotificationSound;
     public PlayerController playerController;
-    public GameObject conversationTrigger;
+    public GameObject conversationTrigger; // Trigger para activar la segunda conversación
 
     private bool isPhoneActive = false;
-    private bool isUserScrolling = false;
 
     void Start()
     {
@@ -28,9 +27,6 @@ public class PhoneManager : MonoBehaviour
         ControlsCanvas.SetActive(true);
         isPhoneActive = false;
         StartCoroutine(HideControlsAndStartConversation());
-
-        // Suscribirse a eventos de scroll
-        chatScroll.onValueChanged.AddListener(OnScroll);
     }
 
     void Update()
@@ -42,7 +38,7 @@ public class PhoneManager : MonoBehaviour
 
             if (isPhoneActive)
             {
-                inputField.DeactivateInputField(); // No activar el InputField automáticamente
+                inputField.DeactivateInputField();
                 if (playerController != null)
                 {
                     playerController.enabled = false;
@@ -57,18 +53,16 @@ public class PhoneManager : MonoBehaviour
             }
         }
 
-        // Si el teléfono está activo y se presiona Enter sin estar escribiendo, activar el InputField
         if (isPhoneActive && !inputField.isFocused && Input.GetKeyDown(KeyCode.Return))
         {
             inputField.text = "";
             inputField.ActivateInputField();
         }
 
-        // Permitir enviar mensaje con Enter cuando el InputField está enfocado
         if (isPhoneActive && inputField.isFocused && Input.GetKeyDown(KeyCode.Return))
         {
             SendMessage();
-            inputField.DeactivateInputField(); // Desactivar el focus después de enviar el mensaje
+            inputField.DeactivateInputField();
         }
     }
 
@@ -90,8 +84,21 @@ public class PhoneManager : MonoBehaviour
         AddMessage("Perfecto, ten cuidado.", false);
         yield return new WaitForSeconds(1);
         AddMessage("No hay nada de qué preocuparse, es un simple hospital abandonado", true);
+        
+        yield return new WaitForSeconds(10); // Espera 10 segundos después de la conversación
+        ClosePhone(); // Cierra el teléfono y limpia el chat
+    }
 
-       
+    IEnumerator StartConversation2()
+    {
+        yield return new WaitForSeconds(6); // Espera 6 segundos después de activar el trigger
+        PhoneCanvas.SetActive(true);
+        AddMessage("Estoy dentro, pero algo no está bien...", true);
+        yield return new WaitForSeconds(3);
+        AddMessage("¿Qué ves?", false);
+        yield return new WaitForSeconds(3);
+        AddMessage("Las luces parpadean y escucho ruidos extraños...", true);
+    }
 
     public void SendMessage()
     {
@@ -106,27 +113,16 @@ public class PhoneManager : MonoBehaviour
 
     void AddMessage(string text, bool isPlayer)
     {
-        GameObject message = Instantiate(isPlayer ? PlayerMessagePrefab : NPCMessagePrefab);
+        GameObject message = Instantiate(isPlayer ? PlayerMessagePrefab : NPCMessagePrefab, chatContent);
         TMP_Text messageText = message.GetComponentInChildren<TMP_Text>();
         messageText.text = text;
 
-        if (isPlayer)
-        {
-            message.transform.SetParent(chatContentPlayer, false);
-        }
-        else
-        {
-            message.transform.SetParent(chatContentNPC, false);
-        }
-
+        message.transform.SetParent(chatContent, false);
         messageText.enableAutoSizing = true;
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(chatContent);
-        
-        if (!isUserScrolling)
-        {
-            StartCoroutine(AutoScroll());
-        }
+        Canvas.ForceUpdateCanvases();
+        StartCoroutine(AutoScroll());
 
         if (isPlayer && playerNotificationSound != null)
         {
@@ -142,15 +138,23 @@ public class PhoneManager : MonoBehaviour
     {
         yield return new WaitForEndOfFrame();
         Canvas.ForceUpdateCanvases();
-        
-        float chatHeight = chatContent.rect.height;
-        float scrollHeight = chatScroll.viewport.rect.height;
-        
-        if (chatHeight > scrollHeight) 
+        chatScroll.verticalNormalizedPosition = 0f;
+    }
+
+    public void ClosePhone()
+    {
+        PhoneCanvas.SetActive(false);
+        foreach (Transform child in chatContent)
         {
-            chatScroll.verticalNormalizedPosition = Mathf.Clamp01(1 - (scrollHeight / chatHeight));
+            Destroy(child.gameObject);
         }
     }
- 
- }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject == conversationTrigger)
+        {
+            StartCoroutine(StartConversation2());
+        }
+    }
 }
