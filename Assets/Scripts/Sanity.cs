@@ -190,6 +190,17 @@ public class Sanity : MonoBehaviour
         StartCoroutine(RestoreSanityAfterDelay(5f, 500, 0.5f));
     }
     
+    public void Reduce250()
+    {
+        // Reproducir el sonido y reducir inicialmente la cordura
+        jumpscareAudioSource2.Play();
+        ReduceSanity(250);
+        ReduceSanity(500);
+    
+        // Iniciar la coroutine para esperar y restaurar la cordura
+        StartCoroutine(RestoreSanityAfterDelay(8f, 500, 0.5f));
+    }
+    
     private IEnumerator RestoreSanityAfterDelay(float restoreDuration, int sanityToRestore, float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
