@@ -175,9 +175,7 @@ public class InteractionRaycaster : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Interactúa con una máquina expendedora.
-    /// </summary>
+    // Interactúa con una máquina expendedora.
     private void InteractWithVendingMachine(GameObject vendingMachine)
     {
         VendingMachine vendingMachineScript = vendingMachine.GetComponent<VendingMachine>();
@@ -192,9 +190,7 @@ public class InteractionRaycaster : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Arregla el generador.
-    /// </summary>
+    // Arregla el generador.
     private void ArreglarGenerador()
     {
         generadorArreglado = true; // Marcar el generador como arreglado
