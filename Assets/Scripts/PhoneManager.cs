@@ -68,7 +68,7 @@ public class PhoneManager : MonoBehaviour
 
     IEnumerator HideControlsAndStartConversation()
     {
-        yield return new WaitForSeconds(20); 
+        yield return new WaitForSeconds(10); 
         ControlsCanvas.SetActive(false);
         StartCoroutine(StartConversation1());
     }
@@ -172,16 +172,23 @@ public class PhoneManager : MonoBehaviour
 
     void AddMessage(string text, bool isPlayer)
     {
-        GameObject message = Instantiate(isPlayer ? PlayerMessagePrefab : NPCMessagePrefab, chatContent);
+        GameObject message = Instantiate(isPlayer ? PlayerMessagePrefab : NPCMessagePrefab);
         TMP_Text messageText = message.GetComponentInChildren<TMP_Text>();
         messageText.text = text;
 
-        message.transform.SetParent(chatContent, false);
+        if (isPlayer)
+        {
+            message.transform.SetParent(chatContentPlayer, false);
+        }
+        else
+        {
+            message.transform.SetParent(chatContentNPC, false);
+        }
+
         messageText.enableAutoSizing = true;
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(chatContent);
-        Canvas.ForceUpdateCanvases();
-        StartCoroutine(AutoScroll());
+        
 
         if (isPlayer && playerNotificationSound != null)
         {
