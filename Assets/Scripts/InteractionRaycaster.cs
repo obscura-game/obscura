@@ -10,14 +10,16 @@ public class InteractionRaycaster : MonoBehaviour
     public Sprite defaultCrosshair;        // Crosshair por defecto
     public Sprite pickupCrosshair;         // Crosshair para objetos recogibles
     public Sprite doorCrosshair;           // Crosshair para puertas
-    public GameObject bidonGasolina;       // Referencia al bidón de gasolina
+    public GameObject bidonGasolina; // Referencia al bidón de gasolina
+    public GameObject key; 
     public TMP_Text mensajeUI;             // Referencia al texto de la UI (TextMeshPro)
     private GameObject detectedObject;     // Objeto detectado actualmente
     private int interactableLayerMask;     // Máscara de capa para objetos interactuables
     private bool generadorArreglado = false; // Indica si el generador ya ha sido arreglado
 
     public GameObject GetDetectedObject() => detectedObject;
-    private PlayerPickUpController playerPickUpController; // Referencia al script de recogida
+    private PlayerPickUpController playerPickUpController;
+    public GameObject bloqueoController;
 
     private void Start()
     {
@@ -100,7 +102,29 @@ public class InteractionRaycaster : MonoBehaviour
             else if (detectedObject.CompareTag("Generador"))
                 crosshairImage.sprite = doorCrosshair;
             else if (detectedObject.CompareTag("Safe"))
-                crosshairImage.sprite = doorCrosshair; // Usa el mismo crosshair o uno diferente
+                crosshairImage.sprite = doorCrosshair;
+            else if (detectedObject.CompareTag("UnblockDoors"))
+            {
+                Debug.Log("Puerta principal detectada");
+                if (playerPickUpController != null && playerPickUpController.currentObject == key)
+                {
+                    Debug.Log("Llave apuntando detectada");
+                    BloqueoPuertasController bloqueoScript = bloqueoController.GetComponent<BloqueoPuertasController>();
+                    if (bloqueoScript != null)
+                    {
+                        // Ahora puedes acceder a los métodos o variables públicas del script
+                        bloqueoScript.DisableCollider();
+                    }
+                    else
+                    {
+                        Debug.LogError("El GameObject no tiene un componente BloqueoPuertasController.");
+                    }
+                }
+                else
+                {
+                    Debug.Log("No tienes la llave en la mano.");
+                }
+            }
             else
                 crosshairImage.sprite = defaultCrosshair;
 
@@ -130,6 +154,27 @@ public class InteractionRaycaster : MonoBehaviour
                 else if (detectedObject.CompareTag("Safe"))
                 {
                     InteractWithSafe(detectedObject);
+                } else if (detectedObject.CompareTag("UnblockDoors"))
+                {
+                    Debug.Log("Puerta principal detectada");
+                    if (playerPickUpController != null && playerPickUpController.currentObject == key)
+                    {
+                        Debug.Log("Llave apuntando detectada");
+                        BloqueoPuertasController bloqueoScript = bloqueoController.GetComponent<BloqueoPuertasController>();
+                        if (bloqueoScript != null)
+                        {
+                            // Ahora puedes acceder a los métodos o variables públicas del script
+                            bloqueoScript.DisableCollider();
+                        }
+                        else
+                        {
+                            Debug.LogError("El GameObject no tiene un componente BloqueoPuertasController.");
+                        }
+                    }
+                    else
+                    {
+                        Debug.Log("No tienes la llave en la mano.");
+                    }
                 }
             }
         }
