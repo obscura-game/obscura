@@ -11,7 +11,6 @@ public class InteractionRaycaster : MonoBehaviour
     public Sprite pickupCrosshair;         // Crosshair para objetos recogibles
     public Sprite doorCrosshair;           // Crosshair para puertas
     public GameObject bidonGasolina;       // Referencia al bidón de gasolina
-    public TMP_Text mensajeUI;             // Referencia al texto de la UI (TextMeshPro)
     private GameObject detectedObject;     // Objeto detectado actualmente
     private int interactableLayerMask;     // Máscara de capa para objetos interactuables
     private bool generadorArreglado = false; // Indica si el generador ya ha sido arreglado
@@ -32,15 +31,6 @@ public class InteractionRaycaster : MonoBehaviour
         if (crosshairImage == null)
         {
             Debug.LogError("El crosshair no está asignado en el Inspector.");
-        }
-        if (mensajeUI == null)
-        {
-            Debug.LogError("El componente TMP_Text no está asignado en el Inspector.");
-        }
-        else
-        {
-            // Desactivar el mensaje inicialmente
-            mensajeUI.gameObject.SetActive(false);
         }
 
         // Asegurarse de que el crosshair esté activo y muestre el sprite por defecto
@@ -210,15 +200,6 @@ public class InteractionRaycaster : MonoBehaviour
         generadorArreglado = true; // Marcar el generador como arreglado
         Debug.Log("Generador arreglado");
 
-        // Mostrar el mensaje en la UI usando TextMeshPro
-        if (mensajeUI != null)
-        {
-            mensajeUI.text = "Generador arreglado";
-            mensajeUI.gameObject.SetActive(true);
-            // Ocultar el mensaje después de 2 segundos
-            Invoke("OcultarMensaje", 2f);
-        }
-
         // Encender las luces con el tag "GenLights"
         LightController lightController = FindObjectOfType<LightController>();
         if (lightController != null)
@@ -234,14 +215,6 @@ public class InteractionRaycaster : MonoBehaviour
         if (bidonGasolina != null)
         {
             bidonGasolina.SetActive(false); // Desactivar el bidón de gasolina
-        }
-    }
-
-    private void OcultarMensaje()
-    {
-        if (mensajeUI != null)
-        {
-            mensajeUI.gameObject.SetActive(false);
         }
     }
 }

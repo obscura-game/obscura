@@ -27,9 +27,7 @@ public class SafeController : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Abre la caja fuerte si el código es correcto.
-    /// </summary>
+    // Abre la caja fuerte si el código es correcto.
     public void TryOpenSafe()
     {
         if (isOpen) return; // Si ya está abierta, no hacer nada
@@ -55,9 +53,7 @@ public class SafeController : MonoBehaviour
         HideCodeCanvas();
     }
 
-    /// <summary>
-    /// Abre la puerta de la caja fuerte.
-    /// </summary>
+    // Abre la puerta de la caja fuerte.
     private void OpenSafe()
     {
         door.transform.localRotation = openRotation;
@@ -65,9 +61,7 @@ public class SafeController : MonoBehaviour
         Debug.Log("Caja fuerte abierta.");
     }
 
-    /// <summary>
-    /// Muestra el Canvas de entrada de código y habilita el cursor.
-    /// </summary>
+    // Muestra el Canvas de entrada de código y habilita el cursor.
     public void ShowCodeCanvas()
     {
         if (safeCanvas != null)
@@ -77,9 +71,7 @@ public class SafeController : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Oculta el Canvas de entrada de código y deshabilita el cursor.
-    /// </summary>
+    // Oculta el Canvas de entrada de código y deshabilita el cursor.
     public void HideCodeCanvas()
     {
         if (safeCanvas != null)
@@ -89,9 +81,7 @@ public class SafeController : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Habilita el cursor y detiene el movimiento de la cámara.
-    /// </summary>
+    // Habilita el cursor y detiene el movimiento de la cámara.
     private void EnableCursor()
     {
         Cursor.lockState = CursorLockMode.None; // Desbloquear el cursor
@@ -103,9 +93,7 @@ public class SafeController : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Deshabilita el cursor y reanuda el movimiento de la cámara.
-    /// </summary>
+    // Deshabilita el cursor y reanuda el movimiento de la cámara.
     private void DisableCursor()
     {
         Cursor.lockState = CursorLockMode.Locked; // Bloquear el cursor
