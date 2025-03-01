@@ -89,7 +89,7 @@ public class PhoneManager : MonoBehaviour
         ClosePhone();
     }
 
-    IEnumerator StartConversation2()
+    public IEnumerator StartConversation2()
     {
         yield return new WaitForSeconds(3);
         PhoneCanvas.SetActive(true);
