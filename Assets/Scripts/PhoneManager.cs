@@ -17,7 +17,7 @@ public class PhoneManager : MonoBehaviour
     public AudioSource npcNotificationSound;
     public AudioSource playerNotificationSound;
     public PlayerController playerController;
-    public GameObject conversationTrigger; // Trigger para activar la segunda conversación
+    public GameObject Trigger;
 
     private bool isPhoneActive = false;
 
@@ -85,19 +85,22 @@ public class PhoneManager : MonoBehaviour
         yield return new WaitForSeconds(1);
         AddMessage("No hay nada de qué preocuparse, es un simple hospital abandonado", true);
         
-        yield return new WaitForSeconds(10); // Espera 10 segundos después de la conversación
-        ClosePhone(); // Cierra el teléfono y limpia el chat
+        yield return new WaitForSeconds(10);
+        ClosePhone();
     }
 
     IEnumerator StartConversation2()
     {
         yield return new WaitForSeconds(3);
         PhoneCanvas.SetActive(true);
-        AddMessage("Estoy dentro, pero algo no está bien...", true);
+        AddMessage("Se han apagado las luces", true);
         yield return new WaitForSeconds(3);
         AddMessage("¿Qué ves?", false);
         yield return new WaitForSeconds(3);
         AddMessage("Las luces parpadean y escucho ruidos extraños...", true);
+
+        yield return new WaitForSeconds(10);
+        ClosePhone();
     }
 
     IEnumerator StartConversation3()
@@ -109,6 +112,9 @@ public class PhoneManager : MonoBehaviour
         AddMessage("¿Qué ves?", false);
         yield return new WaitForSeconds(3);
         AddMessage("Las luces parpadean y escucho ruidos extraños...", true);
+
+        yield return new WaitForSeconds(10);
+        ClosePhone();
     }
 
     IEnumerator StartConversation4()
@@ -120,6 +126,9 @@ public class PhoneManager : MonoBehaviour
         AddMessage("¿Qué ves?", false);
         yield return new WaitForSeconds(3);
         AddMessage("Las luces parpadean y escucho ruidos extraños...", true);
+
+        yield return new WaitForSeconds(10);
+        ClosePhone();
     }
 
     IEnumerator StartConversation5()
@@ -131,6 +140,9 @@ public class PhoneManager : MonoBehaviour
         AddMessage("¿Qué ves?", false);
         yield return new WaitForSeconds(3);
         AddMessage("Las luces parpadean y escucho ruidos extraños...", true);
+
+        yield return new WaitForSeconds(10);
+        ClosePhone();
     }
 
     IEnumerator StartConversation6()
@@ -142,6 +154,9 @@ public class PhoneManager : MonoBehaviour
         AddMessage("¿Qué ves?", false);
         yield return new WaitForSeconds(3);
         AddMessage("Las luces parpadean y escucho ruidos extraños...", true);
+
+        yield return new WaitForSeconds(10);
+        ClosePhone();
     }
 
     public void SendMessage()
@@ -193,12 +208,5 @@ public class PhoneManager : MonoBehaviour
             Destroy(child.gameObject);
         }
     }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject == conversationTrigger)
-        {
-            StartCoroutine(StartConversation2());
-        }
-    }
+  
 }
