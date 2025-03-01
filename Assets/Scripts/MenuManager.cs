@@ -14,10 +14,10 @@ public class MenuManager : MonoBehaviour
     private int dialogoIndex = 0;
     private string[] dialogos = new string[]
     {
-        "En el año 1987, un hospital fue abandonado tras una serie de eventos inexplicables...",
-        "Muchos dicen que los pasillos aún guardan secretos ocultos...",
-        "Pero nadie que ha entrado, ha salido para contar la verdad...",
-        "Ahora, eres tú quien ha decidido entrar..."
+        "Esto ocurrió un 19 de Enero del 98, siempre he sido un chico al que le gustan las aventuras y más si hablamos de colarme en sitios abandonados...",
+        "llevaba ya unos meses con el objetivo de colarme en el antiguo ambulatorio de Burjassot, ya que corría el rumor de que lo iban a derruir...",
+        "y después de un par de días de comprobar si había algo de seguridad, decidí entrar...",
+        "lo que me pasó allí nunca lo podré olvidar."
     };
 
     void Start()
