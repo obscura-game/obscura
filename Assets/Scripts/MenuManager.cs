@@ -24,6 +24,13 @@ public class MenuManager : MonoBehaviour
     {
         historiaCanvas.SetActive(false);
         mainMenuCanvas.SetActive(true);
+        
+        // Asegurar que el botón tiene el listener correctamente asignado
+        if (nextButton != null)
+        {
+            nextButton.onClick.RemoveAllListeners();
+            nextButton.onClick.AddListener(AvanzarDialogo);
+        }
     }
 
     public void StartGame()
@@ -32,15 +39,16 @@ public class MenuManager : MonoBehaviour
         historiaCanvas.SetActive(true);
         dialogoIndex = 0;
         historiaText.text = dialogos[dialogoIndex];
-        nextButton.onClick.AddListener(AvanzarDialogo);
     }
 
     public void AvanzarDialogo()
     {
-        dialogoIndex++;
-        if (dialogoIndex < dialogos.Length)
+        Debug.Log("Botón presionado. Índice actual: " + dialogoIndex);
+        if (dialogoIndex < dialogos.Length - 1)
         {
+            dialogoIndex++;
             historiaText.text = dialogos[dialogoIndex];
+            Debug.Log("Nuevo diálogo: " + historiaText.text);
         }
         else
         {
@@ -51,7 +59,7 @@ public class MenuManager : MonoBehaviour
     IEnumerator CargarEscenaJuego()
     {
         yield return new WaitForSeconds(1);
-        SceneManager.LoadScene("Juego");
+        SceneManager.LoadScene("Juego"); // Asegurar que "Juego" es el nombre exacto de la escena
     }
 
     public void ExitGame()
