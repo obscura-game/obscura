@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -24,6 +25,8 @@ public class Sanity : MonoBehaviour
     // --SONIDOS--
     public AudioSource breathingAudioSource;
     public AudioSource heartbeatAudioSource;
+    public AudioSource jumpscareAudioSource1;
+    public AudioSource jumpscareAudioSource2;
     
     // Breathing
     private float breathingMinVolume = 0.005f;
@@ -180,7 +183,37 @@ public class Sanity : MonoBehaviour
 
     public void Reduce200()
     {
+        // Reproducir el sonido y reducir inicialmente la cordura
+        jumpscareAudioSource1.Play();
         ReduceSanity(200);
+        ReduceSanity(500);
+    
+        // Iniciar la coroutine para esperar y restaurar la cordura
+        StartCoroutine(RestoreSanityAfterDelay());
+    }
+    
+    private IEnumerator RestoreSanityAfterDelay()
+    {
+        // Esperar hasta que termine el audio o pasen 5 segundos
+        float waitTime = (0.5f);
+        yield return new WaitForSeconds(waitTime);
+    
+        // Restaurar gradualmente la cordura perdida
+        float restoreDuration = 5f; // Duración del efecto de restauración
+        float elapsedTime = 0f;
+        int sanityToRestore = 500;
+    
+        while (elapsedTime < restoreDuration)
+        {
+            float sanityChunk = (sanityToRestore / restoreDuration) * Time.deltaTime;
+            IncreaseSanity((int)sanityChunk);
+        
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+    
+        // Asegurar que se restaure toda la cordura exactamente
+        IncreaseSanity(sanityToRestore - (int)(elapsedTime * (sanityToRestore / restoreDuration)));
     }
     
     // --HUD--
