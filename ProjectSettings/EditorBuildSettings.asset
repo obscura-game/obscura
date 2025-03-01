@@ -8,4 +8,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Main.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/EDGAR/Menu.unity
+    guid: af1496afde7a25349a9a5089ee511e30
+  - enabled: 1
+    path: Assets/EDGAR/Juego.unity
+    guid: cdec07ff5476ce341a61c093c4b0d34e
   m_configObjects: {}
