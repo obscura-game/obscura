@@ -165,7 +165,6 @@ public class Sanity : MonoBehaviour
         if (currentSanity < _maxSanity)
         {
             currentSanity += amount;
-            currentSanity = Mathf.Clamp(currentSanity, 0, _maxSanity);
             UpdateSanityHUD();
         }
     }
@@ -176,7 +175,6 @@ public class Sanity : MonoBehaviour
         if (currentSanity > 0)
         {
             currentSanity -= amount;
-            currentSanity = Mathf.Clamp(currentSanity, 0, _maxSanity);
             UpdateSanityHUD();
         }
     }
@@ -189,20 +187,16 @@ public class Sanity : MonoBehaviour
         ReduceSanity(500);
     
         // Iniciar la coroutine para esperar y restaurar la cordura
-        StartCoroutine(RestoreSanityAfterDelay());
+        StartCoroutine(RestoreSanityAfterDelay(5f, 500, 0.5f));
     }
     
-    private IEnumerator RestoreSanityAfterDelay()
+    private IEnumerator RestoreSanityAfterDelay(float restoreDuration, int sanityToRestore, float waitTime)
     {
-        // Esperar hasta que termine el audio o pasen 5 segundos
-        float waitTime = (0.5f);
         yield return new WaitForSeconds(waitTime);
     
         // Restaurar gradualmente la cordura perdida
-        float restoreDuration = 5f; // Duración del efecto de restauración
         float elapsedTime = 0f;
-        int sanityToRestore = 500;
-    
+        
         while (elapsedTime < restoreDuration)
         {
             float sanityChunk = (sanityToRestore / restoreDuration) * Time.deltaTime;
