@@ -73,6 +73,11 @@ public class PhoneManager : MonoBehaviour
         StartCoroutine(StartConversation1());
     }
 
+    public void StartConversation1Wrapper()
+    {
+        StartCoroutine(StartConversation1());
+    }
+
     IEnumerator StartConversation1()
     {
         yield return new WaitForSeconds(1);
@@ -89,7 +94,12 @@ public class PhoneManager : MonoBehaviour
         ClosePhone();
     }
 
-    public IEnumerator StartConversation2()
+    public void StartConversation2Wrapper()
+    {
+        StartCoroutine(StartConversation2());
+    }
+
+    IEnumerator StartConversation2()
     {
         yield return new WaitForSeconds(3);
         PhoneCanvas.SetActive(true);
@@ -99,8 +109,13 @@ public class PhoneManager : MonoBehaviour
         yield return new WaitForSeconds(3);
         AddMessage("Las luces parpadean y escucho ruidos extraños...", true);
 
-        yield return new WaitForSeconds(10);
+        yield return new WaitForSeconds(3);
         ClosePhone();
+    }
+
+    public void StartConversation3Wrapper()
+    {
+        StartCoroutine(StartConversation3());
     }
 
     IEnumerator StartConversation3()
@@ -113,8 +128,13 @@ public class PhoneManager : MonoBehaviour
         yield return new WaitForSeconds(3);
         AddMessage("Las luces parpadean y escucho ruidos extraños...", true);
 
-        yield return new WaitForSeconds(10);
+        yield return new WaitForSeconds(3);
         ClosePhone();
+    }
+
+    public void StartConversation4Wrapper()
+    {
+        StartCoroutine(StartConversation4());
     }
 
     IEnumerator StartConversation4()
@@ -127,8 +147,13 @@ public class PhoneManager : MonoBehaviour
         yield return new WaitForSeconds(3);
         AddMessage("Las luces parpadean y escucho ruidos extraños...", true);
 
-        yield return new WaitForSeconds(10);
+        yield return new WaitForSeconds(3);
         ClosePhone();
+    }
+
+    public void StartConversation5Wrapper()
+    {
+        StartCoroutine(StartConversation5());
     }
 
     IEnumerator StartConversation5()
@@ -141,8 +166,13 @@ public class PhoneManager : MonoBehaviour
         yield return new WaitForSeconds(3);
         AddMessage("Las luces parpadean y escucho ruidos extraños...", true);
 
-        yield return new WaitForSeconds(10);
+        yield return new WaitForSeconds(3);
         ClosePhone();
+    }
+
+    public void StartConversation6Wrapper()
+    {
+        StartCoroutine(StartConversation6());
     }
 
     IEnumerator StartConversation6()
@@ -155,7 +185,26 @@ public class PhoneManager : MonoBehaviour
         yield return new WaitForSeconds(3);
         AddMessage("Las luces parpadean y escucho ruidos extraños...", true);
 
-        yield return new WaitForSeconds(10);
+        yield return new WaitForSeconds(3);
+        ClosePhone();
+    }
+
+    public void StartConversation7Wrapper()
+    {
+        StartCoroutine(StartConversation7());
+    }
+
+    IEnumerator StartConversation7()
+    {
+        yield return new WaitForSeconds(3);
+        PhoneCanvas.SetActive(true);
+        AddMessage("Estoy dentro, pero algo no está bien...", true);
+        yield return new WaitForSeconds(3);
+        AddMessage("¿Qué ves?", false);
+        yield return new WaitForSeconds(3);
+        AddMessage("Las luces parpadean y escucho ruidos extraños...", true);
+
+        yield return new WaitForSeconds(3);
         ClosePhone();
     }
 
