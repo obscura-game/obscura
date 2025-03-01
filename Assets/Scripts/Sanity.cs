@@ -177,6 +177,11 @@ public class Sanity : MonoBehaviour
             UpdateSanityHUD();
         }
     }
+
+    public void Reduce200()
+    {
+        ReduceSanity(200);
+    }
     
     // --HUD--
 
