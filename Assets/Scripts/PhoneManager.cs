@@ -91,7 +91,51 @@ public class PhoneManager : MonoBehaviour
 
     IEnumerator StartConversation2()
     {
-        yield return new WaitForSeconds(6); // Espera 6 segundos después de activar el trigger
+        yield return new WaitForSeconds(3);
+        PhoneCanvas.SetActive(true);
+        AddMessage("Estoy dentro, pero algo no está bien...", true);
+        yield return new WaitForSeconds(3);
+        AddMessage("¿Qué ves?", false);
+        yield return new WaitForSeconds(3);
+        AddMessage("Las luces parpadean y escucho ruidos extraños...", true);
+    }
+
+    IEnumerator StartConversation3()
+    {
+        yield return new WaitForSeconds(3);
+        PhoneCanvas.SetActive(true);
+        AddMessage("Estoy dentro, pero algo no está bien...", true);
+        yield return new WaitForSeconds(3);
+        AddMessage("¿Qué ves?", false);
+        yield return new WaitForSeconds(3);
+        AddMessage("Las luces parpadean y escucho ruidos extraños...", true);
+    }
+
+    IEnumerator StartConversation4()
+    {
+        yield return new WaitForSeconds(3);
+        PhoneCanvas.SetActive(true);
+        AddMessage("Estoy dentro, pero algo no está bien...", true);
+        yield return new WaitForSeconds(3);
+        AddMessage("¿Qué ves?", false);
+        yield return new WaitForSeconds(3);
+        AddMessage("Las luces parpadean y escucho ruidos extraños...", true);
+    }
+
+    IEnumerator StartConversation5()
+    {
+        yield return new WaitForSeconds(3);
+        PhoneCanvas.SetActive(true);
+        AddMessage("Estoy dentro, pero algo no está bien...", true);
+        yield return new WaitForSeconds(3);
+        AddMessage("¿Qué ves?", false);
+        yield return new WaitForSeconds(3);
+        AddMessage("Las luces parpadean y escucho ruidos extraños...", true);
+    }
+
+    IEnumerator StartConversation6()
+    {
+        yield return new WaitForSeconds(3);
         PhoneCanvas.SetActive(true);
         AddMessage("Estoy dentro, pero algo no está bien...", true);
         yield return new WaitForSeconds(3);
