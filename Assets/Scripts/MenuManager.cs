@@ -31,35 +31,55 @@ public class MenuManager : MonoBehaviour
             nextButton.onClick.RemoveAllListeners();
             nextButton.onClick.AddListener(AvanzarDialogo);
         }
+        else
+        {
+            Debug.LogError("NextButton no está asignado en el Inspector.");
+        }
+
+        if (historiaText == null)
+        {
+            Debug.LogError("HistoriaText no está asignado en el Inspector.");
+        }
     }
 
     public void StartGame()
     {
+        Debug.Log("Juego iniciado");
         mainMenuCanvas.SetActive(false);
         historiaCanvas.SetActive(true);
         dialogoIndex = 0;
-        historiaText.text = dialogos[dialogoIndex];
+        if (historiaText != null)
+        {
+            historiaText.text = dialogos[dialogoIndex];
+            Debug.Log("Primer texto mostrado: " + historiaText.text);
+        }
     }
 
     public void AvanzarDialogo()
+{
+    Debug.Log("Botón presionado. Índice actual antes de cambiar: " + dialogoIndex);
+
+    if (dialogoIndex < dialogos.Length - 1)
     {
-        Debug.Log("Botón presionado. Índice actual: " + dialogoIndex);
-        if (dialogoIndex < dialogos.Length - 1)
+        dialogoIndex++;
+        if (historiaText != null)
         {
-            dialogoIndex++;
             historiaText.text = dialogos[dialogoIndex];
-            Debug.Log("Nuevo diálogo: " + historiaText.text);
-        }
-        else
-        {
-            StartCoroutine(CargarEscenaJuego());
+            Debug.Log("Nuevo diálogo mostrado: " + historiaText.text);
         }
     }
+    else
+    {
+        Debug.Log("Último diálogo alcanzado, cambiando de escena.");
+        StartCoroutine(CargarEscenaJuego());
+    }
+}
+
 
     IEnumerator CargarEscenaJuego()
     {
         yield return new WaitForSeconds(1);
-        SceneManager.LoadScene("Juego"); // Asegurar que "Juego" es el nombre exacto de la escena
+        SceneManager.LoadScene("Main"); // Asegurar que "Juego" es el nombre exacto de la escena
     }
 
     public void ExitGame()

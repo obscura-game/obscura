@@ -4,10 +4,8 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
-  - mainMenuCanvas: {fileID: 6915757731162304086, guid: c509e81194852c04e843faf73825f9bc,
-      type: 3}
-  - historiaCanvas: {fileID: 2750910875103498328, guid: fef271c6c812ff84a8f95fbe392903d2,
-      type: 3}
+  - mainMenuCanvas: {instanceID: 0}
+  - historiaCanvas: {instanceID: 0}
   - historiaText: {instanceID: 0}
   - nextButton: {instanceID: 0}
   executionOrder: 0
