@@ -17,6 +17,7 @@ public class PhoneManager : MonoBehaviour
     public AudioSource npcNotificationSound;
     public AudioSource playerNotificationSound;
     public PlayerController playerController;
+    public GameObject conversationTrigger;
 
     private bool isPhoneActive = false;
     private bool isUserScrolling = false;
@@ -90,31 +91,15 @@ public class PhoneManager : MonoBehaviour
         yield return new WaitForSeconds(1);
         AddMessage("No hay nada de qué preocuparse, es un simple hospital abandonado", true);
 
-        yield return new WaitForSeconds(1);
-        AddMessage("¿Has podido entrar?", false);
-        yield return new WaitForSeconds(1);
-        AddMessage("Sí, ha sido más fácil de lo que pensaba.", true);
-        yield return new WaitForSeconds(1);
-        AddMessage("Perfecto, ten cuidado.", false);
-        yield return new WaitForSeconds(1);
-        AddMessage("No hay nada de qué preocuparse, es un simple hospital abandonado", true);
-        yield return new WaitForSeconds(1);
-        AddMessage("¿Has podido entrar?", false);
-        yield return new WaitForSeconds(1);
-        AddMessage("Sí, ha sido más fácil de lo que pensaba.", true);
-        yield return new WaitForSeconds(1);
-        AddMessage("Perfecto, ten cuidado.", false);
-        yield return new WaitForSeconds(1);
-        AddMessage("No hay nada de qué preocuparse, es un simple hospital abandonado", true);
-    }
+       
 
     public void SendMessage()
     {
         if (!string.IsNullOrEmpty(inputField.text))
         {
             AddMessage(inputField.text, true);
-            inputField.text = ""; // Limpiar el InputField después de enviar
-            inputField.DeactivateInputField(); // Desactivar InputField después de enviar
+            inputField.text = "";
+            inputField.DeactivateInputField();
             StartCoroutine(AutoScroll());
         }
     }
@@ -138,7 +123,7 @@ public class PhoneManager : MonoBehaviour
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(chatContent);
         
-        if (!isUserScrolling) // Solo hacer scroll si el usuario no está navegando manualmente
+        if (!isUserScrolling)
         {
             StartCoroutine(AutoScroll());
         }
@@ -161,15 +146,11 @@ public class PhoneManager : MonoBehaviour
         float chatHeight = chatContent.rect.height;
         float scrollHeight = chatScroll.viewport.rect.height;
         
-        if (chatHeight > scrollHeight) // Si el contenido es más grande que la vista, hacer scroll
+        if (chatHeight > scrollHeight) 
         {
             chatScroll.verticalNormalizedPosition = Mathf.Clamp01(1 - (scrollHeight / chatHeight));
         }
     }
-
-    public void OnScroll(Vector2 position)
-    {
-        // Detectar si el usuario está desplazándose manualmente
-        isUserScrolling = chatScroll.verticalNormalizedPosition > 0.01f;
-    }
+ 
+ }
 }

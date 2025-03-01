@@ -1095,7 +1095,8 @@ MonoBehaviour:
   pickupCrosshair: {fileID: 21300000, guid: b889ef0124f73fa4298de5e962dac98b, type: 3}
   doorCrosshair: {fileID: 21300000, guid: 56f8165bc8b0a98419e06f018a808c4c, type: 3}
   bidonGasolina: {fileID: 0}
-  mensajeUI: {fileID: 0}
+  key: {fileID: 0}
+  bloqueoController: {fileID: 0}
 --- !u!114 &626422862
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2215,6 +2216,12 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1314460188}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!224 &1190669203 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3060176966519864644, guid: fbd137d94e1557d49a0666b00d2f7a7f,
+    type: 3}
+  m_PrefabInstance: {fileID: 7120131225600607157}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1285363854
 GameObject:
   m_ObjectHideFlags: 0
@@ -3277,7 +3284,7 @@ MonoBehaviour:
   PhoneCanvas: {fileID: 1012648467}
   ControlsCanvas: {fileID: 315227384}
   chatScroll: {fileID: 555352607}
-  chatContent: {fileID: 0}
+  chatContent: {fileID: 1190669203}
   chatContentNPC: {fileID: 406963860}
   chatContentPlayer: {fileID: 1976599024}
   inputField: {fileID: 596738257}
