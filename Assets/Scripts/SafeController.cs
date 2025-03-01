@@ -27,6 +27,15 @@ public class SafeController : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        string enteredCode = codeInputField.text;
+        if (enteredCode.Length > 5) // Cambia la validación a la longitud del string
+        {
+            codeInputField.text = "";
+        }
+    }
+
     // Abre la caja fuerte si el código es correcto.
     public void TryOpenSafe()
     {
@@ -64,7 +73,7 @@ public class SafeController : MonoBehaviour
     // Muestra el Canvas de entrada de código y habilita el cursor.
     public void ShowCodeCanvas()
     {
-        if (safeCanvas != null)
+        if (safeCanvas != null && isOpen == false)
         {
             safeCanvas.SetActive(true);
             EnableCursor(); // Habilitar el cursor
@@ -103,5 +112,10 @@ public class SafeController : MonoBehaviour
         {
             playerMovement.enabled = true;      // Reactivar el movimiento del jugador
         }
+    }
+
+    public void AddDigit(string digit)
+    {
+        codeInputField.text += digit;
     }
 }
