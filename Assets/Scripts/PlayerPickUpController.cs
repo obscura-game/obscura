@@ -36,6 +36,9 @@ public class PlayerPickUpController : MonoBehaviour
             GameObject detectedObject = raycaster.GetDetectedObject();
             if (detectedObject != null && detectedObject.CompareTag("PickUp"))
             {
+                currentObject = detectedObject;
+                Debug.Log(detectedObject.name);
+                Debug.Log(currentObject.name);
                 if (!equipped)
                 {
                     PickUp(detectedObject);
@@ -49,7 +52,7 @@ public class PlayerPickUpController : MonoBehaviour
         }
 
         // Cambia entre on/off con F
-        if (Input.GetKeyDown(KeyCode.F) && equipped)
+        if (Input.GetKeyDown(KeyCode.F) && equipped && (currentObject.name == "Flashlight"))
         {
             if (isOn)
             {
@@ -105,6 +108,13 @@ public class PlayerPickUpController : MonoBehaviour
         {
             currentRb.isKinematic = true;
             currentRb.useGravity = false;
+        }
+
+        // Si el objeto es una soda, activa su script SodaController
+        SodaController sodaController = currentObject.GetComponent<SodaController>();
+        if (sodaController != null)
+        {
+            sodaController.PickUp(this.transform); // Llama al método PickUp del script SodaController
         }
     }
 

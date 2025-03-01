@@ -65,4 +65,10 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+
+    // Actualizar la sensibilidad
+    public void SetSensitivity(float newSensitivity)
+    {
+        sensitivity = newSensitivity;
+    }
 }
