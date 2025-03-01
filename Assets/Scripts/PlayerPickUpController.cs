@@ -37,8 +37,7 @@ public class PlayerPickUpController : MonoBehaviour
             if (detectedObject != null && detectedObject.CompareTag("PickUp"))
             {
                 currentObject = detectedObject;
-                Debug.Log(detectedObject.name);
-                Debug.Log(currentObject.name);
+                Debug.Log("Objeto equipado: " + currentObject.name);
                 if (!equipped)
                 {
                     PickUp(detectedObject);
