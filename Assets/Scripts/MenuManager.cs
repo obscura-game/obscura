@@ -79,7 +79,18 @@ public class MenuManager : MonoBehaviour
     IEnumerator CargarEscenaJuego()
     {
         yield return new WaitForSeconds(1);
-        SceneManager.LoadScene("Main"); // Asegurar que "Juego" es el nombre exacto de la escena
+        SceneManager.LoadScene("Main");
+    }
+
+    public void cargarMenu()
+    {
+        StartCoroutine(CargarEscenaMenu());
+    }
+
+    IEnumerator CargarEscenaMenu()
+    {
+        yield return new WaitForSeconds(1);
+        SceneManager.LoadScene("Menu");
     }
 
     public void ExitGame()

@@ -80,15 +80,15 @@ public class PhoneManager : MonoBehaviour
 
     IEnumerator StartConversation1()
     {
-        yield return new WaitForSeconds(1);
-        AddMessage("¿Has podido entrar?", false);
+        yield return new WaitForSeconds(3);
+        AddMessage("Al final has entrado?", false);
         PhoneCanvas.SetActive(true);
-        yield return new WaitForSeconds(4);
-        AddMessage("Sí, ha sido más fácil de lo que pensaba.", true);
-        yield return new WaitForSeconds(1);
-        AddMessage("Perfecto, ten cuidado.", false);
-        yield return new WaitForSeconds(1);
-        AddMessage("No hay nada de qué preocuparse, es un simple hospital abandonado", true);
+        yield return new WaitForSeconds(3);
+        AddMessage("Si si, ha sido bastante fácil", true);
+        yield return new WaitForSeconds(3);
+        AddMessage("Pues va, ten cuidado y que no te pillen jajaja", false);
+        yield return new WaitForSeconds(3);
+        AddMessage("Si va a ser un paseo", true);
         
         yield return new WaitForSeconds(10);
         ClosePhone();
@@ -103,11 +103,15 @@ public class PhoneManager : MonoBehaviour
     {
         yield return new WaitForSeconds(3);
         PhoneCanvas.SetActive(true);
-        AddMessage("Se han apagado las luces", true);
+        AddMessage("Tú, acabo de ver que hace unos años mataron a un pavo ahí", false);
         yield return new WaitForSeconds(3);
-        AddMessage("¿Qué ves?", false);
+        AddMessage("Si te digo que se me acaba de ir la luz como te quedas?", true);
         yield return new WaitForSeconds(3);
-        AddMessage("Las luces parpadean y escucho ruidos extraños...", true);
+        AddMessage("Que dices loco jajajaj", false);
+        yield return new WaitForSeconds(3);
+        AddMessage("Que te lo digo en serio", true);
+        yield return new WaitForSeconds(3);
+        AddMessage("Pues busca un generador o algo por el sotano", false);
 
         yield return new WaitForSeconds(3);
         ClosePhone();
@@ -122,11 +126,11 @@ public class PhoneManager : MonoBehaviour
     {
         yield return new WaitForSeconds(3);
         PhoneCanvas.SetActive(true);
-        AddMessage("Estoy dentro, pero algo no está bien...", true);
+        AddMessage("Lo acabo de encontrar pero esto no se enciende", true);
         yield return new WaitForSeconds(3);
-        AddMessage("¿Qué ves?", false);
+        AddMessage("No habrá por ahí mismo gasolina o algo?", false);
         yield return new WaitForSeconds(3);
-        AddMessage("Las luces parpadean y escucho ruidos extraños...", true);
+        AddMessage("Yo que sé, voy a buscar algo", true);
 
         yield return new WaitForSeconds(3);
         ClosePhone();
@@ -141,11 +145,11 @@ public class PhoneManager : MonoBehaviour
     {
         yield return new WaitForSeconds(3);
         PhoneCanvas.SetActive(true);
-        AddMessage("Estoy dentro, pero algo no está bien...", true);
+        AddMessage("Has encontrado algo?", false);
         yield return new WaitForSeconds(3);
-        AddMessage("¿Qué ves?", false);
+        AddMessage("Aquí hay un bidón de gasolina", true);
         yield return new WaitForSeconds(3);
-        AddMessage("Las luces parpadean y escucho ruidos extraños...", true);
+        AddMessage("Pillalo y ponsela al generador, a ver si funciona", false);
 
         yield return new WaitForSeconds(3);
         ClosePhone();
@@ -160,11 +164,9 @@ public class PhoneManager : MonoBehaviour
     {
         yield return new WaitForSeconds(3);
         PhoneCanvas.SetActive(true);
-        AddMessage("Estoy dentro, pero algo no está bien...", true);
+        AddMessage("YA VAN LAS LUCES", true);
         yield return new WaitForSeconds(3);
-        AddMessage("¿Qué ves?", false);
-        yield return new WaitForSeconds(3);
-        AddMessage("Las luces parpadean y escucho ruidos extraños...", true);
+        AddMessage("Bieen, venga que no te mueres hoy", false);
 
         yield return new WaitForSeconds(3);
         ClosePhone();
@@ -179,11 +181,9 @@ public class PhoneManager : MonoBehaviour
     {
         yield return new WaitForSeconds(3);
         PhoneCanvas.SetActive(true);
-        AddMessage("Estoy dentro, pero algo no está bien...", true);
+        AddMessage("Voy a largarme de aquí que no me está dando buena espina", true);
         yield return new WaitForSeconds(3);
-        AddMessage("¿Qué ves?", false);
-        yield return new WaitForSeconds(3);
-        AddMessage("Las luces parpadean y escucho ruidos extraños...", true);
+        AddMessage("Si si, igual casi que mejor, igual va alguien por lo de las luces", false);
 
         yield return new WaitForSeconds(3);
         ClosePhone();
@@ -196,13 +196,15 @@ public class PhoneManager : MonoBehaviour
 
     IEnumerator StartConversation7()
     {
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(1);
         PhoneCanvas.SetActive(true);
-        AddMessage("Estoy dentro, pero algo no está bien...", true);
+        AddMessage("Tú, que no se abren las puertas", true);
         yield return new WaitForSeconds(3);
-        AddMessage("¿Qué ves?", false);
+        AddMessage("Va deja de vacilarme", false);
         yield return new WaitForSeconds(3);
-        AddMessage("Las luces parpadean y escucho ruidos extraños...", true);
+        AddMessage("Que te lo digo en serio", true);
+        yield return new WaitForSeconds(3);
+        AddMessage("Yo que sé, yo me piro ya a sobar, busca algo por ahí para salir", false);
 
         yield return new WaitForSeconds(3);
         ClosePhone();
@@ -259,10 +261,20 @@ public class PhoneManager : MonoBehaviour
     public void ClosePhone()
     {
         PhoneCanvas.SetActive(false);
-        foreach (Transform child in chatContent)
+
+        // Borra todos los mensajes del contenedor NPC (iterando de atrás hacia adelante)
+        for (int i = chatContentNPC.childCount - 1; i >= 0; i--)
         {
-            Destroy(child.gameObject);
+            DestroyImmediate(chatContentNPC.GetChild(i).gameObject);
         }
+
+        // Borra todos los mensajes del contenedor Player (iterando de atrás hacia adelante)
+        for (int i = chatContentPlayer.childCount - 1; i >= 0; i--)
+        {
+            DestroyImmediate(chatContentPlayer.GetChild(i).gameObject);
+        }
+
+        Canvas.ForceUpdateCanvases();
+        LayoutRebuilder.ForceRebuildLayoutImmediate(chatContent);
     }
-  
 }
