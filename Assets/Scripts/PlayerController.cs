@@ -70,6 +70,5 @@ public class PlayerController : MonoBehaviour
     public void SetSensitivity(float newSensitivity)
     {
         sensitivity = newSensitivity;
-        Debug.Log("Nueva sensibilidad: " + sensitivity);
     }
 }
