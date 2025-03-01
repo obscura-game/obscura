@@ -9,6 +9,7 @@ public class PhoneManager : MonoBehaviour
     public GameObject PhoneCanvas;
     public GameObject ControlsCanvas;
     public ScrollRect chatScroll;
+    public RectTransform chatContent;
     public Transform chatContentNPC, chatContentPlayer;
     public TMP_InputField inputField;
     public GameObject PlayerMessagePrefab;
@@ -18,7 +19,7 @@ public class PhoneManager : MonoBehaviour
     public PlayerController playerController;
 
     private bool isPhoneActive = false;
-    private bool isScrolling = false;
+    private bool isUserScrolling = false;
 
     void Start()
     {
@@ -26,6 +27,9 @@ public class PhoneManager : MonoBehaviour
         ControlsCanvas.SetActive(true);
         isPhoneActive = false;
         StartCoroutine(HideControlsAndStartConversation());
+
+        // Suscribirse a eventos de scroll
+        chatScroll.onValueChanged.AddListener(OnScroll);
     }
 
     void Update()
@@ -37,8 +41,7 @@ public class PhoneManager : MonoBehaviour
 
             if (isPhoneActive)
             {
-                inputField.ActivateInputField();
-                inputField.text = "";
+                inputField.DeactivateInputField(); // No activar el InputField automáticamente
                 if (playerController != null)
                 {
                     playerController.enabled = false;
@@ -46,12 +49,25 @@ public class PhoneManager : MonoBehaviour
             }
             else
             {
-                inputField.DeactivateInputField();
                 if (playerController != null)
                 {
                     playerController.enabled = true;
                 }
             }
+        }
+
+        // Si el teléfono está activo y se presiona Enter sin estar escribiendo, activar el InputField
+        if (isPhoneActive && !inputField.isFocused && Input.GetKeyDown(KeyCode.Return))
+        {
+            inputField.text = "";
+            inputField.ActivateInputField();
+        }
+
+        // Permitir enviar mensaje con Enter cuando el InputField está enfocado
+        if (isPhoneActive && inputField.isFocused && Input.GetKeyDown(KeyCode.Return))
+        {
+            SendMessage();
+            inputField.DeactivateInputField(); // Desactivar el focus después de enviar el mensaje
         }
     }
 
@@ -59,18 +75,36 @@ public class PhoneManager : MonoBehaviour
     {
         yield return new WaitForSeconds(20); 
         ControlsCanvas.SetActive(false);
-        StartCoroutine(StartConversation());
+        StartCoroutine(StartConversation1());
     }
 
-    IEnumerator StartConversation()
+    IEnumerator StartConversation1()
     {
-        yield return new WaitForSeconds(10);
+        yield return new WaitForSeconds(1);
         AddMessage("¿Has podido entrar?", false);
-        yield return new WaitForSeconds(5);
-        AddMessage("Sí, ha sido más fácil de lo que pensaba.", true);
-        yield return new WaitForSeconds(5);
-        AddMessage("Perfecto, ten cuidado.", false);
+        PhoneCanvas.SetActive(true);
         yield return new WaitForSeconds(4);
+        AddMessage("Sí, ha sido más fácil de lo que pensaba.", true);
+        yield return new WaitForSeconds(1);
+        AddMessage("Perfecto, ten cuidado.", false);
+        yield return new WaitForSeconds(1);
+        AddMessage("No hay nada de qué preocuparse, es un simple hospital abandonado", true);
+
+        yield return new WaitForSeconds(1);
+        AddMessage("¿Has podido entrar?", false);
+        yield return new WaitForSeconds(1);
+        AddMessage("Sí, ha sido más fácil de lo que pensaba.", true);
+        yield return new WaitForSeconds(1);
+        AddMessage("Perfecto, ten cuidado.", false);
+        yield return new WaitForSeconds(1);
+        AddMessage("No hay nada de qué preocuparse, es un simple hospital abandonado", true);
+        yield return new WaitForSeconds(1);
+        AddMessage("¿Has podido entrar?", false);
+        yield return new WaitForSeconds(1);
+        AddMessage("Sí, ha sido más fácil de lo que pensaba.", true);
+        yield return new WaitForSeconds(1);
+        AddMessage("Perfecto, ten cuidado.", false);
+        yield return new WaitForSeconds(1);
         AddMessage("No hay nada de qué preocuparse, es un simple hospital abandonado", true);
     }
 
@@ -79,9 +113,9 @@ public class PhoneManager : MonoBehaviour
         if (!string.IsNullOrEmpty(inputField.text))
         {
             AddMessage(inputField.text, true);
-            inputField.text = "";
-            inputField.ActivateInputField();
-            StartCoroutine(ScrollToBottom());
+            inputField.text = ""; // Limpiar el InputField después de enviar
+            inputField.DeactivateInputField(); // Desactivar InputField después de enviar
+            StartCoroutine(AutoScroll());
         }
     }
 
@@ -102,12 +136,11 @@ public class PhoneManager : MonoBehaviour
 
         messageText.enableAutoSizing = true;
 
-        LayoutRebuilder.ForceRebuildLayoutImmediate(chatContentPlayer.GetComponent<RectTransform>());
-        LayoutRebuilder.ForceRebuildLayoutImmediate(chatContentNPC.GetComponent<RectTransform>());
+        LayoutRebuilder.ForceRebuildLayoutImmediate(chatContent);
         
-        if (!isScrolling) // Solo hacer scroll si el usuario no está navegando manualmente
+        if (!isUserScrolling) // Solo hacer scroll si el usuario no está navegando manualmente
         {
-            StartCoroutine(ScrollToBottom());
+            StartCoroutine(AutoScroll());
         }
 
         if (isPlayer && playerNotificationSound != null)
@@ -120,23 +153,23 @@ public class PhoneManager : MonoBehaviour
         }
     }
 
-    IEnumerator ScrollToBottom()
+    IEnumerator AutoScroll()
     {
         yield return new WaitForEndOfFrame();
         Canvas.ForceUpdateCanvases();
-        if (!isScrolling)
+        
+        float chatHeight = chatContent.rect.height;
+        float scrollHeight = chatScroll.viewport.rect.height;
+        
+        if (chatHeight > scrollHeight) // Si el contenido es más grande que la vista, hacer scroll
         {
-            chatScroll.verticalNormalizedPosition = 0f;
+            chatScroll.verticalNormalizedPosition = Mathf.Clamp01(1 - (scrollHeight / chatHeight));
         }
     }
 
-    public void OnBeginScroll()
+    public void OnScroll(Vector2 position)
     {
-        isScrolling = true;
-    }
-
-    public void OnEndScroll()
-    {
-        isScrolling = false;
+        // Detectar si el usuario está desplazándose manualmente
+        isUserScrolling = chatScroll.verticalNormalizedPosition > 0.01f;
     }
 }
