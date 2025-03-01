@@ -154,26 +154,6 @@ Transform:
   - {fileID: 992797149}
   m_Father: {fileID: 621782084}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &36550406 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5903919931257501111, guid: 89101079fcad52d4086db09a36652d52,
-    type: 3}
-  m_PrefabInstance: {fileID: 3962430009907623209}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &36550411
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 36550406}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13f449d0bc9594141813847831216862, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  controlsCanvas: {fileID: 5903919931257501111, guid: 89101079fcad52d4086db09a36652d52,
-    type: 3}
 --- !u!1 &63032014
 GameObject:
   m_ObjectHideFlags: 0
@@ -594,6 +574,12 @@ Transform:
   - {fileID: 332971510}
   m_Father: {fileID: 422022107}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &315227384 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3487066964136052979, guid: 89101079fcad52d4086db09a36652d52,
+    type: 3}
+  m_PrefabInstance: {fileID: 3962430009907623209}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &320138427
 GameObject:
   m_ObjectHideFlags: 0
@@ -3289,7 +3275,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PhoneCanvas: {fileID: 1012648467}
-  ControlsCanvas: {fileID: 36550406}
+  ControlsCanvas: {fileID: 315227384}
   chatScroll: {fileID: 555352607}
   chatContentNPC: {fileID: 406963860}
   chatContentPlayer: {fileID: 1976599024}
@@ -3298,8 +3284,8 @@ MonoBehaviour:
     type: 3}
   NPCMessagePrefab: {fileID: 3279939446250433846, guid: 664ae611620265f4599724b9442aa8be,
     type: 3}
-  npcNotificationSound: {fileID: 1788112055}
-  playerNotificationSound: {fileID: 626422867}
+  npcNotificationSound: {fileID: 0}
+  playerNotificationSound: {fileID: 0}
   playerController: {fileID: 626422864}
 --- !u!4 &1788112054
 Transform:
@@ -4226,11 +4212,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 5903919931257501111, guid: 89101079fcad52d4086db09a36652d52,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 36550411}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 89101079fcad52d4086db09a36652d52, type: 3}
 --- !u!1001 &7120131225600607157
 PrefabInstance:
@@ -4245,10 +4227,35 @@ PrefabInstance:
       propertyPath: m_Name
       value: PhoneCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 836919640873815061, guid: fbd137d94e1557d49a0666b00d2f7a7f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1001209940996478303, guid: fbd137d94e1557d49a0666b00d2f7a7f,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1001209940996478303, guid: fbd137d94e1557d49a0666b00d2f7a7f,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1001209940996478303, guid: fbd137d94e1557d49a0666b00d2f7a7f,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: -7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1001209940996478303, guid: fbd137d94e1557d49a0666b00d2f7a7f,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: -17
+      objectReference: {fileID: 0}
     - target: {fileID: 1442234888323098481, guid: fbd137d94e1557d49a0666b00d2f7a7f,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 1442234888323098481, guid: fbd137d94e1557d49a0666b00d2f7a7f,
         type: 3}
@@ -4258,7 +4265,17 @@ PrefabInstance:
     - target: {fileID: 3138466138416707219, guid: fbd137d94e1557d49a0666b00d2f7a7f,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 68
+      objectReference: {fileID: 0}
+    - target: {fileID: 3797422642583890263, guid: fbd137d94e1557d49a0666b00d2f7a7f,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3797422642583890263, guid: fbd137d94e1557d49a0666b00d2f7a7f,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: -7
       objectReference: {fileID: 0}
     - target: {fileID: 3984157375464629681, guid: fbd137d94e1557d49a0666b00d2f7a7f,
         type: 3}
@@ -4360,15 +4377,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4377687051060005520, guid: fbd137d94e1557d49a0666b00d2f7a7f,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4377687051060005520, guid: fbd137d94e1557d49a0666b00d2f7a7f,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: -17
+      objectReference: {fileID: 0}
     - target: {fileID: 5477549738132720275, guid: fbd137d94e1557d49a0666b00d2f7a7f,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5477549738132720275, guid: fbd137d94e1557d49a0666b00d2f7a7f,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5477549738132720275, guid: fbd137d94e1557d49a0666b00d2f7a7f,
         type: 3}
@@ -4378,12 +4405,12 @@ PrefabInstance:
     - target: {fileID: 6043618535469380783, guid: fbd137d94e1557d49a0666b00d2f7a7f,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6043618535469380783, guid: fbd137d94e1557d49a0666b00d2f7a7f,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

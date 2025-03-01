@@ -18,6 +18,7 @@ public class PhoneManager : MonoBehaviour
     public PlayerController playerController;
 
     private bool isPhoneActive = false;
+    private bool isScrolling = false;
 
     void Start()
     {
@@ -29,7 +30,7 @@ public class PhoneManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.C))
+        if (Input.GetKeyDown(KeyCode.C) && !inputField.isFocused)
         {
             isPhoneActive = !isPhoneActive;
             PhoneCanvas.SetActive(isPhoneActive);
@@ -37,6 +38,7 @@ public class PhoneManager : MonoBehaviour
             if (isPhoneActive)
             {
                 inputField.ActivateInputField();
+                inputField.text = "";
                 if (playerController != null)
                 {
                     playerController.enabled = false;
@@ -79,6 +81,7 @@ public class PhoneManager : MonoBehaviour
             AddMessage(inputField.text, true);
             inputField.text = "";
             inputField.ActivateInputField();
+            StartCoroutine(ScrollToBottom());
         }
     }
 
@@ -102,7 +105,10 @@ public class PhoneManager : MonoBehaviour
         LayoutRebuilder.ForceRebuildLayoutImmediate(chatContentPlayer.GetComponent<RectTransform>());
         LayoutRebuilder.ForceRebuildLayoutImmediate(chatContentNPC.GetComponent<RectTransform>());
         
-        StartCoroutine(ScrollToBottom());
+        if (!isScrolling) // Solo hacer scroll si el usuario no está navegando manualmente
+        {
+            StartCoroutine(ScrollToBottom());
+        }
 
         if (isPlayer && playerNotificationSound != null)
         {
@@ -118,6 +124,19 @@ public class PhoneManager : MonoBehaviour
     {
         yield return new WaitForEndOfFrame();
         Canvas.ForceUpdateCanvases();
-        chatScroll.verticalNormalizedPosition = 0f;
+        if (!isScrolling)
+        {
+            chatScroll.verticalNormalizedPosition = 0f;
+        }
+    }
+
+    public void OnBeginScroll()
+    {
+        isScrolling = true;
+    }
+
+    public void OnEndScroll()
+    {
+        isScrolling = false;
     }
 }
