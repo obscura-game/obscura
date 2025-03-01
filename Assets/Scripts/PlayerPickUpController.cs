@@ -109,6 +109,13 @@ public class PlayerPickUpController : MonoBehaviour
             currentRb.isKinematic = true;
             currentRb.useGravity = false;
         }
+
+        // Si el objeto es una soda, activa su script SodaController
+        SodaController sodaController = currentObject.GetComponent<SodaController>();
+        if (sodaController != null)
+        {
+            sodaController.PickUp(this.transform); // Llama al método PickUp del script SodaController
+        }
     }
 
     private void Drop()
